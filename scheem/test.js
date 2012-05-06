@@ -20,3 +20,7 @@ assert.deepEqual(parse("(+ 1 (f x 3 y))"), ["+", "1", ["f", "x", "3", "y"]],
 
 assert.deepEqual(parse("( +  x 3  )"), ["+", "x", "3"],"parse ( +  x 3  )");
 assert.deepEqual(parse("  ( + x 3) "), ["+", "x", "3"],"parse ( + x 3) with spaces around parentheses");
+
+assert.deepEqual(parse("'x"), ["quote","x"],"parse 'x as (quote x)");
+assert.deepEqual(parse("('x a)"), [["quote","x"],"a"],"parse ('x a) as ((quote x) a)");
+assert.deepEqual(parse("'(1 2 3)"), ["quote",["1","2","3"]],"parse '(1 2 3) as (quote (1 2 3))");
