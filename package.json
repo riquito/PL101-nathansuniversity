@@ -1,0 +1,9 @@
+{
+  "name": "PL101",
+  "description": "Homeworks for the course PL101 of Nathan University",
+  "author": "Riccardo Attilio Galli <riccardo@sideralis.org>",
+  "dependencies": {
+    "pegjs": "0.7.x"
+  },
+  "engine": "node >= 0.6.17"
+}
