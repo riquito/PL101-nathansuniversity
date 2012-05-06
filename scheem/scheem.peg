@@ -2,7 +2,7 @@ start =
     a:expression / a:'' { return a==='' ? undefined : a }
 
 multiExpr =
- '(' ' '* a:atomList ' '* b:multiExpr*  ' '* ')'
+ ' '* '(' ' '* a:atomList ' '* b:multiExpr*  ' '* ')' ' '*
   { return a.concat(b)}
 
 expression =   
