@@ -1,9 +1,11 @@
 {
   "name": "PL101",
+  "version": "1.1.0",
   "description": "Homeworks for the course PL101 of Nathan University",
   "author": "Riccardo Attilio Galli <riccardo@sideralis.org>",
   "dependencies": {
-    "pegjs": "0.7.x"
+    "pegjs": "0.7.x",
+    "chai" : "> 0.5"
   },
   "engine": "node >= 0.6.17"
 }

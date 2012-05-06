@@ -1,0 +1,23 @@
+start =
+    a:expression / a:'' { return a==='' ? undefined : a }
+
+multiExpr =
+ '(' ' '* a:atomList ' '* b:multiExpr*  ' '* ')'
+  { return a.concat(b)}
+
+expression =   
+  atom / atomList / a:multiExpr
+
+
+validchar
+    = [0-9a-zA-Z_?!+\-=@#$%^&*/.]
+
+atom =
+    chars:validchar+
+       { return chars.join(""); }
+
+spacedAtom =
+ ' '+ a:atom { return a; }
+
+atomList =
+  a:atom b:spacedAtom* { return [a].concat(b);}
