@@ -21,7 +21,7 @@ atom =
     a:validchar+ { return a.join(""); }
 
 _ = /* whitespace */
-   [ \r\n\f\t]
+   [ \r\n\f\t] / ";;" [^\n]*
 
 quotedExpr =
   "'" a:expression {return ['quote',a];}

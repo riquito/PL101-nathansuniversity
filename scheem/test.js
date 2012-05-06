@@ -24,3 +24,7 @@ assert.deepEqual(parse("  ( + x 3) "), ["+", "x", "3"],"parse ( + x 3) with spac
 assert.deepEqual(parse("'x"), ["quote","x"],"parse 'x as (quote x)");
 assert.deepEqual(parse("('x a)"), [["quote","x"],"a"],"parse ('x a) as ((quote x) a)");
 assert.deepEqual(parse("'(1 2 3)"), ["quote",["1","2","3"]],"parse '(1 2 3) as (quote (1 2 3))");
+
+assert.deepEqual(parse("'x"), ["quote","x"],"parse 'x as (quote x)");
+assert.deepEqual(parse("('x a)"), [["quote","x"],"a"],"parse ('x a) as ((quote x) a)");
+assert.deepEqual(parse("(1 2 3) ;;comment"), ["1","2","3"],"parse (1 2 3) --comment as (1 2 3)");
