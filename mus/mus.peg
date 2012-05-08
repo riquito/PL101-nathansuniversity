@@ -1,0 +1,42 @@
+start =
+   a:expr / a:'' { return  a==='' ? undefined : a}
+
+main =
+ x:(pitchSeq / pitchPar /pitch ) { return x;}
+
+spacedExpr = 
+ _+ a:main { return a; }
+
+expr = _* a:main b:spacedExpr* _* { return [a].concat(b)[0];}
+
+pitch =
+ x:[a-zA-Z] y:[0-9] '[' z:positiveInteger ']' { return {'tag':'note','pitch':x.toLowerCase()+y,'dur':z}; }
+
+spacedPitch =
+ _+ a:pitch { return a;}
+
+spacedPitchSeq =
+ _+ a:pitchSeq { return a;}
+
+pitchSeq =
+  a:(pitchPar/pitch) b:(spacedPitchSeq/ spacedExpr) { return {'tag':'seq','left':a,'right':b}; }
+
+
+commaPitch =
+ ',' a:pitch { return a;}
+
+commaPitchPar =
+ ',' a:pitchPar { return a;}
+
+
+
+pitchPar =
+  a:pitch b:(commaPitchPar/commaPitch) { return {'tag':'par','left':a,'right':b}; }
+
+
+
+positiveInteger = 
+  a:[1-9] b:[0-9]* { return parseInt([a].concat(b).join('')); }
+
+_ = /* whitespace */
+   [ \r\n\f\t]
