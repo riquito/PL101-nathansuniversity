@@ -17,5 +17,11 @@ var evalScheem = function (expr, env) {
             return evalScheem(expr[1],env) * evalScheem(expr[2],env);
         case '/':
             return evalScheem(expr[1],env) / evalScheem(expr[2],env);
+        case 'define':
+            env[expr[1]] = evalScheem(expr[2],env);
+            return 0;
+        case 'set!':
+            env[expr[1]] = evalScheem(expr[2],env);
+            return 0;
     }
 };
