@@ -1,4 +1,6 @@
-var evalScheem = function (expr, env) {
+"strict";
+
+function evalScheem(expr, env) {
     // Numbers evaluate to themselves
     if (typeof expr === 'number') {
         return expr;
@@ -24,4 +26,8 @@ var evalScheem = function (expr, env) {
             env[expr[1]] = evalScheem(expr[2],env);
             return 0;
     }
+}
+
+module.exports = {
+  evalScheem : evalScheem
 };
