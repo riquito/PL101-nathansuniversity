@@ -55,6 +55,10 @@ function evalScheem(expr, env) {
             return evalScheem(expr[1], env)[0];
         case 'cdr':
             return evalScheem(expr[1], env).slice(1);
+        case 'if':
+            if (evalScheem(expr[1])==='#t')
+                 return evalScheem(expr[2]);
+            else return evalScheem(expr[3]);
     }
 }
 

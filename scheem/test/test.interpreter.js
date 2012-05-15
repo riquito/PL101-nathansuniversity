@@ -322,6 +322,42 @@ suite('interpreter',function(){
         });
         
   });
+  
+  
+  suite('if', function() {
+        
+        test('(if (= 1 1) 2 3)', function() {
+            assert.deepEqual(evalScheem(['if', ['=', 1, 1], 2, 3], {}),
+            2)
+            ;
+        });
+        
+        test('(if (= 1 0) 2 3)', function() {
+            assert.deepEqual(evalScheem(['if', ['=', 1, 0], 2, 3], {}), 3)
+            ;
+        });
+  
+        test('(if (= 1 1) 2 error)', function() {
+            assert.deepEqual(evalScheem(['if', ['=', 1, 1], 2, 'error'], {}), 2)
+            ;
+        });
+
+        test('(if (= 1 1) error 3)', function() {
+            assert.deepEqual(evalScheem(['if', ['=', 1, 0], 'error', 3], {}), 3)
+            ;
+        });
+        
+        test('(if (= 1 1) (if (= 2 3) 10 11) 12)', function() {
+            assert.deepEqual(evalScheem(
+                ['if', ['=', 1, 1],
+                       ['if', ['=', 2, 3], 10, 11],
+                       12],
+                {}),
+            11)
+            ;
+        });
+        
+  });
    
 });
 
