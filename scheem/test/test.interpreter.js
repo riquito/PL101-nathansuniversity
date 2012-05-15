@@ -311,6 +311,17 @@ suite('interpreter',function(){
             );
         });
   });
+  
+  suite('cdr', function() {
+        
+        test('cdr \'((1 2) 3 4)', function() {
+            assert.deepEqual(
+                evalScheem(['cdr',['quote',[[1,2],3,4]]],{}),
+                [3,4]
+            );
+        });
+        
+  });
    
 });
 

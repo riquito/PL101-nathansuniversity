@@ -53,6 +53,8 @@ function evalScheem(expr, env) {
                     evalScheem(expr[2], env));
         case 'car':
             return evalScheem(expr[1], env)[0];
+        case 'cdr':
+            return evalScheem(expr[1], env).slice(1);
     }
 }
 
