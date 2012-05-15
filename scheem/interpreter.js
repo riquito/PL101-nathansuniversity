@@ -48,6 +48,9 @@ function evalScheem(expr, env) {
                 (evalScheem(expr[1], env) >
                  evalScheem(expr[2], env));
             return gt ? '#t' : '#f';
+        case 'cons':
+            return [evalScheem(expr[1], env)].concat(
+                    evalScheem(expr[2], env));
     }
 }
 

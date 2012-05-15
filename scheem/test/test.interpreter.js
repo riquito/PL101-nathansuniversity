@@ -284,5 +284,24 @@ suite('interpreter',function(){
         
    });
    
+   suite('cons', function() {
+        
+        test('cons 1 \'(2 3)', function() {
+            assert.deepEqual(
+                evalScheem(['cons',1,['quote',[2,3]]],{}),
+                [1,2,3]
+            );
+        });
+        
+        test('cons \'(1 2) \'(3 4)', function() {
+            assert.deepEqual(
+                evalScheem(['cons',['quote',[1,2]],['quote',[3,4]]],{}),
+                [[1,2],3,4]
+            );
+        });
+        
+  });
+  
+   
 });
 
