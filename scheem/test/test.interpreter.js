@@ -301,7 +301,16 @@ suite('interpreter',function(){
         });
         
   });
-  
+        
+  suite('car', function() {
+        
+        test('car \'((1 2) 3 4))', function() {
+            assert.deepEqual(
+                evalScheem(['car',['quote',[[1,2],3,4]]],{}),
+                [1,2]
+            );
+        });
+  });
    
 });
 

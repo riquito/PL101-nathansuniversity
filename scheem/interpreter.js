@@ -51,6 +51,8 @@ function evalScheem(expr, env) {
         case 'cons':
             return [evalScheem(expr[1], env)].concat(
                     evalScheem(expr[2], env));
+        case 'car':
+            return evalScheem(expr[1], env)[0];
     }
 }
 
