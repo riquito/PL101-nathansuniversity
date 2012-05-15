@@ -125,5 +125,49 @@ suite('interpreter',function(){
 
    });
    
+   
+   suite('begin', function() {
+        
+        test('(begin 1 2 3)', function() {
+            
+            assert.deepEqual(
+                evalScheem(['begin',1,2,3],{}),
+                3
+            );
+            
+        });
+        
+        test('(begin (+ 2 2))', function() {
+            
+            assert.deepEqual(
+                evalScheem(['begin',['+',2,2]],{}),
+                4
+            );
+            
+        });
+        
+        test('(begin x y x)', function() {
+            
+            assert.deepEqual(
+                evalScheem(['begin','x','y','x'],{x:1, y:2}),
+                1
+            );
+            
+        });
+        
+        test('(begin (set! x 5) (set! x (+ y x) x))', function() {
+            
+            assert.deepEqual(
+                evalScheem(['begin', ['set!', 'x', 5], 
+                                     ['set!', 'x', ['+', 'y', 'x']],
+                                     'x'
+                           ],{x:1, y:2}),
+                7
+            );
+            
+        });
+
+   });
+   
 });
 
