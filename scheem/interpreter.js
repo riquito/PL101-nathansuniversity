@@ -31,6 +31,8 @@ function evalScheem(expr, env) {
                 res = evalScheem(expr[i],env);
             }
             return res;
+        case 'quote':
+            return expr[1];
     }
 }
 

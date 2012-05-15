@@ -169,5 +169,24 @@ suite('interpreter',function(){
 
    });
    
+   
+   suite('quote', function() {
+        
+        test('(quote (+ 2 3))', function() {
+            assert.deepEqual(
+                evalScheem(['quote',['+',2,3]],{}),
+                ['+',2,3]
+            );
+        });
+        
+        test('(quote (quote (+ 2 3)))', function() {
+            assert.deepEqual(
+                evalScheem(['quote',['quote',['+',2,3]]],{}),
+                ['quote',['+',2,3]]
+            );
+        });
+        
+   });
+   
 });
 
