@@ -188,5 +188,101 @@ suite('interpreter',function(){
         
    });
    
+   suite('equality', function() {
+        
+        test('(= 2 2)', function() {
+            assert.deepEqual(
+                evalScheem(['=',2,2],{}),
+                '#t'
+            );
+        });
+        
+        test('(= 2 3)', function() {
+            assert.deepEqual(
+                evalScheem(['=',2,3],{}),
+                '#f'
+            );
+        });
+        
+        test('(= 2 (+ 1 1))', function() {
+            assert.deepEqual(
+                evalScheem(['=',2,['+',1,1]],{}),
+                '#t'
+            );
+        });
+        
+        test('(= 2 (+ 2 1))', function() {
+            assert.deepEqual(
+                evalScheem(['=',2,['+',2,1]],{}),
+                '#f'
+            );
+        });
+        
+   });
+   
+   suite('greater than', function() {
+        
+        test('(> 2 1)', function() {
+            assert.deepEqual(
+                evalScheem(['>',2,1],{}),
+                '#t'
+            );
+        });
+        
+        test('(> 2 3)', function() {
+            assert.deepEqual(
+                evalScheem(['>',2,3],{}),
+                '#f'
+            );
+        });
+        
+        test('(> 2 (+ 0 1))', function() {
+            assert.deepEqual(
+                evalScheem(['>',2,['+',0,1]],{}),
+                '#t'
+            );
+        });
+        
+        test('(> 2 (+ 2 1))', function() {
+            assert.deepEqual(
+                evalScheem(['>',2,['+',2,1]],{}),
+                '#f'
+            );
+        });
+        
+   });
+   
+   suite('lesser than', function() {
+        
+        test('(< 1 2)', function() {
+            assert.deepEqual(
+                evalScheem(['<',1,2],{}),
+                '#t'
+            );
+        });
+        
+        test('(< 3 2)', function() {
+            assert.deepEqual(
+                evalScheem(['<',3,2],{}),
+                '#f'
+            );
+        });
+        
+        test('(< 2 (+ 0 1))', function() {
+            assert.deepEqual(
+                evalScheem(['<',1,['+',0,2]],{}),
+                '#t'
+            );
+        });
+        
+        test('(< 3 (+ 2 1))', function() {
+            assert.deepEqual(
+                evalScheem(['<',3,['+',2,1]],{}),
+                '#f'
+            );
+        });
+        
+   });
+   
 });
 

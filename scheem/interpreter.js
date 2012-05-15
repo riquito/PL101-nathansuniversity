@@ -33,6 +33,21 @@ function evalScheem(expr, env) {
             return res;
         case 'quote':
             return expr[1];
+        case '=':
+            var eq =
+                (evalScheem(expr[1], env) ===
+                 evalScheem(expr[2], env));
+            return eq ? '#t' : '#f';
+        case '<':
+            var lt =
+                (evalScheem(expr[1], env) <
+                 evalScheem(expr[2], env));
+            return lt ? '#t' : '#f';
+        case '>':
+            var gt =
+                (evalScheem(expr[1], env) >
+                 evalScheem(expr[2], env));
+            return gt ? '#t' : '#f';
     }
 }
 
