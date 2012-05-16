@@ -103,16 +103,25 @@ function evalScheem(expr, env) {
             
             return expr[1];
         case '=':
+            when(expr.length < 3).raise(expr,'too few elements');
+            when(expr.length > 3).raise(expr,'too many elements');
+            
             var eq =
                 (evalScheem(expr[1], env) ===
                  evalScheem(expr[2], env));
             return eq ? '#t' : '#f';
         case '<':
+            when(expr.length < 3).raise(expr,'too few elements');
+            when(expr.length > 3).raise(expr,'too many elements');
+            
             var lt =
                 (evalScheem(expr[1], env) <
                  evalScheem(expr[2], env));
             return lt ? '#t' : '#f';
         case '>':
+            when(expr.length < 3).raise(expr,'too few elements');
+            when(expr.length > 3).raise(expr,'too many elements');
+            
             var gt =
                 (evalScheem(expr[1], env) >
                  evalScheem(expr[2], env));
@@ -125,6 +134,9 @@ function evalScheem(expr, env) {
         case 'cdr':
             return evalScheem(expr[1], env).slice(1);
         case 'if':
+            when(expr.length < 4).raise(expr,'too few elements');
+            when(expr.length > 4).raise(expr,'too many elements');
+            
             if (evalScheem(expr[1])==='#t')
                  return evalScheem(expr[2]);
             else return evalScheem(expr[3]);

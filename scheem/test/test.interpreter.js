@@ -300,6 +300,18 @@ suite('interpreter',function(){
             );
         });
         
+        test('must have exactly two parameters', function() {
+            
+            assert.throws(function(){
+                evalScheem(['=',1,2,3], {});
+            });
+            
+            assert.throws(function(){
+                evalScheem(['=',1], {});
+            });
+            
+        });
+        
    });
    
    suite('greater than', function() {
@@ -332,6 +344,18 @@ suite('interpreter',function(){
             );
         });
         
+        test('must have exactly two parameters', function() {
+            
+            assert.throws(function(){
+                evalScheem(['>',1,2,3], {});
+            });
+            
+            assert.throws(function(){
+                evalScheem(['>',1], {});
+            });
+            
+        });
+        
    });
    
    suite('lesser than', function() {
@@ -362,6 +386,18 @@ suite('interpreter',function(){
                 evalScheem(['<',3,['+',2,1]],{}),
                 '#f'
             );
+        });
+        
+        test('must have exactly two parameters', function() {
+            
+            assert.throws(function(){
+                evalScheem(['<',1,2,3], {});
+            });
+            
+            assert.throws(function(){
+                evalScheem(['<',1], {});
+            });
+            
         });
         
    });
@@ -437,6 +473,18 @@ suite('interpreter',function(){
                 {}),
             11)
             ;
+        });
+        
+        test('must have exactly four parameters', function() {
+            
+            assert.throws(function(){
+                evalScheem(['if',true,1,2,3], {});
+            });
+            
+            assert.throws(function(){
+                evalScheem(['if',true,1], {});
+            });
+            
         });
         
   });
