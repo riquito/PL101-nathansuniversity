@@ -91,12 +91,16 @@ function evalScheem(expr, env) {
             env[expr[1]] = evalScheem(expr[2],env);
             return 0;
         case 'begin':
+            when(expr.length < 2).raise(expr,'too few elements');
+            
             var res = 0;
             for (var i=1;i<expr.length;i++) {
                 res = evalScheem(expr[i],env);
             }
             return res;
         case 'quote':
+            when(expr.length > 2).raise(expr,'too many elements');
+            
             return expr[1];
         case '=':
             var eq =

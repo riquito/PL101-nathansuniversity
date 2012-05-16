@@ -232,6 +232,14 @@ suite('interpreter',function(){
             );
             
         });
+        
+        test('must have at least an expression to evaluate', function() {
+            
+            assert.throws(function(){
+                evalScheem(['begin'], env);
+            });
+            
+        });
 
    });
    
@@ -250,6 +258,14 @@ suite('interpreter',function(){
                 evalScheem(['quote',['quote',['+',2,3]]],{}),
                 ['quote',['+',2,3]]
             );
+        });
+        
+        test('must have at most an expression to quote', function() {
+            
+            assert.throws(function(){
+                evalScheem(['quote',1,2], env);
+            });
+            
         });
         
    });
