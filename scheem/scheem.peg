@@ -17,8 +17,14 @@ atomList =
 validchar = 
    [0-9a-zA-Z_?!+\-=@#$%^&*/.]
 
+atomString =
+   a:validchar+ { return a.join(""); }
+
+number =
+   a:[1-9] b:[0-9]* { return parseFloat(a+b.join("")); }
+
 atom =
-    a:validchar+ { return a.join(""); }
+   a:number / a:atomString { return a; }
 
 _ = /* whitespace */
    [ \r\n\f\t] / ";;" [^\n]*

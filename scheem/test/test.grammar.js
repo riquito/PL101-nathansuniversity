@@ -20,6 +20,10 @@ suite('grammar',function(){
         assert.deepEqual(parse("atom"), "atom");
     });
     
+    test("parse: integer",function(){
+        assert.deepEqual(parse("42"), 42);
+    });
+    
     test("parse: +",function(){
         assert.deepEqual(parse("+"), "+");
     });
@@ -29,19 +33,19 @@ suite('grammar',function(){
     });
     
     test("parse: (+ x 3)",function(){
-        assert.deepEqual(parse("(+ x 3)"), ["+", "x", "3"],"parse (+ x 3)");
+        assert.deepEqual(parse("(+ x 3)"), ["+", "x", 3],"parse (+ x 3)");
     });
     
     test("parse: (+ 1 (f x 3 y))",function(){
-        assert.deepEqual(parse("(+ 1 (f x 3 y))"), ["+", "1", ["f", "x", "3", "y"]]);
+        assert.deepEqual(parse("(+ 1 (f x 3 y))"), ["+", 1, ["f", "x", 3, "y"]]);
     });
     
     test("parse: ( +  x 3  )",function(){
-        assert.deepEqual(parse("( +  x 3  )"), ["+", "x", "3"]);
+        assert.deepEqual(parse("( +  x 3  )"), ["+", "x", 3]);
     });
     
     test("parse:  ( + x 3) ",function(){
-        assert.deepEqual(parse("  ( + x 3) "), ["+", "x", "3"]);
+        assert.deepEqual(parse("  ( + x 3) "), ["+", "x", 3]);
     });
     
     test("parse: 'x as (quote x)",function(){
@@ -53,7 +57,7 @@ suite('grammar',function(){
     });
     
     test("parse: '(1 2 3)",function(){
-        assert.deepEqual(parse("'(1 2 3)"), ["quote",["1","2","3"]]);
+        assert.deepEqual(parse("'(1 2 3)"), ["quote",[1,2,3]]);
     });
     
     test("parse: ('x a)",function(){
@@ -61,7 +65,7 @@ suite('grammar',function(){
     });
     
     test("parse: (1 2 3) ;;anything until end of line",function(){
-        assert.deepEqual(parse("(1 2 3) ;;comment"), ["1","2","3"]);
+        assert.deepEqual(parse("(1 2 3) ;;comment"), [1,2,3]);
     });
 
 });
