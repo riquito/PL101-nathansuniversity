@@ -75,9 +75,19 @@ function evalScheem(expr, env) {
             return a / b;
         
         case 'define':
+            when(expr.length > 3).raise(expr,'too many elements');
+            when(expr.length < 3).raise(expr,'too few elements');
+            
+            when(env[expr[1]] !== undefined).raise(expr[1],'not a new variable');
+            
             env[expr[1]] = evalScheem(expr[2],env);
             return 0;
         case 'set!':
+            when(expr.length > 3).raise(expr,'too many elements');
+            when(expr.length < 3).raise(expr,'too few elements');
+            
+            when(env[expr[1]] === undefined).raise(expr[1],'variable does not exist');
+            
             env[expr[1]] = evalScheem(expr[2],env);
             return 0;
         case 'begin':

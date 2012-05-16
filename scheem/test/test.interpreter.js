@@ -143,7 +143,7 @@ suite('interpreter',function(){
    
    suite('define', function() {
         
-        test('new variable', function() {
+        test('assign variable', function() {
             var env = {'a':2,'b':3};
             
             assert.deepEqual(
@@ -152,6 +152,15 @@ suite('interpreter',function(){
             );
             
             assert.deepEqual(env,{'a':2,'b':3,'x':4});
+            
+        });
+        
+        test('variable must not exist', function() {
+            var env = {'a':2,'b':3};
+            
+            assert.throws(function(){
+                evalScheem(['define', 'a', 4], env)
+            });
             
         });
 
@@ -168,6 +177,15 @@ suite('interpreter',function(){
             );
             
             assert.deepEqual(env,{'a':2,'b':5});
+            
+        });
+        
+        test('variable must exist', function() {
+            var env = {'a':2,'b':3};
+            
+            assert.throws(function(){
+                evalScheem(['set!', 'c', 4], env)
+            });
             
         });
 
