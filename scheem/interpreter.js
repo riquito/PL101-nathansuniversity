@@ -1,5 +1,20 @@
 "strict";
 
+function isNumber(x) { return typeof x === 'number'; }
+function isBoolean(x) { return typeof x === 'boolean'; }
+
+function when(bool){
+    return {
+        'raise' : bool ?
+            function(x,message){
+                throw new Error(JSON.stringify(x)+' => '+ message);
+            }
+            :
+            function(){}
+    };
+}
+
+
 function evalScheem(expr, env) {
     // Numbers evaluate to themselves
     if (typeof expr === 'number') {
@@ -12,13 +27,53 @@ function evalScheem(expr, env) {
     // Look at head of list for operation
     switch (expr[0]) {
         case '+':
-            return evalScheem(expr[1],env) + evalScheem(expr[2],env);
+            when(expr.length > 3).raise(expr,'too many elements');
+            when(expr.length < 3).raise(expr,'too few elements');
+            
+            var a = evalScheem(expr[1],env),
+                b = evalScheem(expr[2],env);
+            
+            when(!isNumber(a)).raise(a,'not a number');
+            when(!isNumber(b)).raise(b,'not a number');
+            
+            return a + b;
+        
         case '-':
-            return evalScheem(expr[1],env) - evalScheem(expr[2],env);
+            when(expr.length > 3).raise(expr,'too many elements');
+            when(expr.length < 3).raise(expr,'too few elements');
+            
+            var a = evalScheem(expr[1],env),
+                b = evalScheem(expr[2],env);
+            
+            when(!isNumber(a)).raise(a,'not a number');
+            when(!isNumber(b)).raise(b,'not a number');
+            
+            return a - b;
+        
         case '*':
-            return evalScheem(expr[1],env) * evalScheem(expr[2],env);
+            when(expr.length > 3).raise(expr,'too many elements');
+            when(expr.length < 3).raise(expr,'too few elements');
+            
+            var a = evalScheem(expr[1],env),
+                b = evalScheem(expr[2],env);
+            
+            when(!isNumber(a)).raise(a,'not a number');
+            when(!isNumber(b)).raise(b,'not a number');
+            
+            return a * b;
+        
         case '/':
-            return evalScheem(expr[1],env) / evalScheem(expr[2],env);
+            when(expr.length > 3).raise(expr,'too many elements');
+            when(expr.length < 3).raise(expr,'too few elements');
+            
+            var a = evalScheem(expr[1],env),
+                b = evalScheem(expr[2],env);
+            
+            when(!isNumber(a)).raise(a,'not a number');
+            when(!isNumber(b)).raise(b,'not a number');
+            
+            return a / b;
+        
         case 'define':
             env[expr[1]] = evalScheem(expr[2],env);
             return 0;

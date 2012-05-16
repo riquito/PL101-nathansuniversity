@@ -21,6 +21,18 @@ suite('interpreter',function(){
                 7
             );
         });
+        
+        test('only numbers are accepted', function() {
+            assert.throws(function(){
+                evalScheem(['+',1,['quote',[1,2]]], {});
+            });
+        });
+        
+        test('only two numbers', function() {
+            assert.throws(function(){
+                evalScheem(['+',1,2,3], {});
+            });
+        });
 
    });
    
@@ -39,6 +51,18 @@ suite('interpreter',function(){
                 3
             );
         });
+        
+        test('only numbers are accepted', function() {
+            assert.throws(function(){
+                evalScheem(['-',1,['quote',[1,2]]], {});
+            });
+        });
+        
+        test('only two numbers', function() {
+            assert.throws(function(){
+                evalScheem(['-',1,2,3], {});
+            });
+        });
 
    });
    
@@ -56,6 +80,18 @@ suite('interpreter',function(){
                 evalScheem(['*', -3, ['*', 2, 4]], {}),
                 -24
             );
+        });
+        
+        test('only numbers are accepted', function() {
+            assert.throws(function(){
+                evalScheem(['*',1,['quote',[1,2]]], {});
+            });
+        });
+        
+        test('only two numbers', function() {
+            assert.throws(function(){
+                evalScheem(['*',1,2,3], {});
+            });
         });
 
    });
@@ -89,6 +125,18 @@ suite('interpreter',function(){
                 evalScheem(['/', 0, 3], {}),
                 0
             );
+        });
+        
+        test('only numbers are accepted', function() {
+            assert.throws(function(){
+                evalScheem(['/',1,['quote',[1,2]]], {});
+            });
+        });
+        
+        test('only two numbers', function() {
+            assert.throws(function(){
+                evalScheem(['/',1,2,3], {});
+            });
         });
 
    });
