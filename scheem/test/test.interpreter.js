@@ -418,6 +418,26 @@ suite('interpreter',function(){
             );
         });
         
+        test('must have exactly two parameters', function() {
+            
+            assert.throws(function(){
+                evalScheem(['cons',[1,2],[3],[4]], {});
+            });
+            
+            assert.throws(function(){
+                evalScheem(['cons'], {});
+            });
+            
+        });
+        
+        test('must have an array as second parameter', function() {
+            
+            assert.throws(function(){
+                evalScheem(['cons',1,2], {});
+            });
+            
+        });
+        
   });
         
   suite('car', function() {
@@ -428,6 +448,26 @@ suite('interpreter',function(){
                 [1,2]
             );
         });
+        
+        test('must have exactly one parameter', function() {
+            
+            assert.throws(function(){
+                evalScheem(['car',[1,2],3], {});
+            });
+            
+            assert.throws(function(){
+                evalScheem(['car'], {});
+            });
+            
+        });
+        
+        test('must have an array as parameter', function() {
+            
+            assert.throws(function(){
+                evalScheem(['car',1], {});
+            });
+            
+        });
   });
   
   suite('cdr', function() {
@@ -437,6 +477,26 @@ suite('interpreter',function(){
                 evalScheem(['cdr',['quote',[[1,2],3,4]]],{}),
                 [3,4]
             );
+        });
+        
+        test('must have exactly one parameter', function() {
+            
+            assert.throws(function(){
+                evalScheem(['cdr',[1,2],3], {});
+            });
+            
+            assert.throws(function(){
+                evalScheem(['cdr'], {});
+            });
+            
+        });
+        
+        test('must have an array as parameter', function() {
+            
+            assert.throws(function(){
+                evalScheem(['cdr',1], {});
+            });
+            
         });
         
   });

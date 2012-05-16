@@ -3,6 +3,38 @@
 function isNumber(x) { return typeof x === 'number'; }
 function isBoolean(x) { return typeof x === 'boolean'; }
 
+function isInteger(n){ // note, it implies n IS a number
+  return n===+n && n===(n|0);
+}
+
+function isFloat(n) { // note, it implies n IS a number
+  return n===+n && n!==(n|0);
+}
+
+// _type and _class2type ideas from jQuery core.js 1.7.1
+function _type(obj) {
+  
+  return obj == null ? // match null and undefined
+    String( obj ) :
+    this._class2type[ Object.prototype.toString.call(obj) ] || "object";
+}
+
+var _class2type = (function() {
+  var classes = ["Boolean","Number","String","Function","Array","Date","RegExp","Object"],
+      class2type = {};
+  
+  for (var i=0,il=classes.length;i<il;i++) {
+    class2type[ "[object " + classes[i] + "]" ] = classes[i].toLowerCase();
+  };
+  
+  return class2type;
+  
+})();
+
+var isArray = Array.isArray || function( obj ) {
+    return this._type(obj) === "array";
+};
+
 function when(bool){
     return {
         'raise' : bool ?
@@ -127,12 +159,32 @@ function evalScheem(expr, env) {
                  evalScheem(expr[2], env));
             return gt ? '#t' : '#f';
         case 'cons':
-            return [evalScheem(expr[1], env)].concat(
-                    evalScheem(expr[2], env));
+            when(expr.length < 3).raise(expr,'too few elements');
+            when(expr.length > 3).raise(expr,'too many elements');
+            
+            var x = evalScheem(expr[2], env);
+            
+            when(!isArray(x)).raise(expr[2],'not an array');
+            
+            return [evalScheem(expr[1], env)].concat(x);
         case 'car':
-            return evalScheem(expr[1], env)[0];
+            when(expr.length < 2).raise(expr,'too few elements');
+            when(expr.length > 2).raise(expr,'too many elements');
+            
+            var x = evalScheem(expr[1], env);
+            
+            when(!isArray(x)).raise(expr[1],'not an array');
+            
+            return x[0];
         case 'cdr':
-            return evalScheem(expr[1], env).slice(1);
+            when(expr.length < 2).raise(expr,'too few elements');
+            when(expr.length > 2).raise(expr,'too many elements');
+            
+            var x = evalScheem(expr[1], env);
+            
+            when(!isArray(x)).raise(expr[1],'not an array');
+            
+            return x.slice(1);
         case 'if':
             when(expr.length < 4).raise(expr,'too few elements');
             when(expr.length > 4).raise(expr,'too many elements');
