@@ -548,6 +548,40 @@ suite('interpreter',function(){
         });
         
   });
+  
+  suite('lambda', function() {
+        
+        test('lambda x x', function() {
+            assert.deepEqual(evalScheem([['lambda','x','x'],5], {}),5);
+        });
+        
+        test('lambda (x) (+ 1 x)', function() {
+            assert.deepEqual(evalScheem([['lambda','x',['+', 'x', 1]],5], {}),6);
+        });
+        
+        test('lambda (x y) (* x y)', function() {
+            assert.deepEqual(evalScheem([['lambda',['x','y'],['*', 'x', 'y']],3,2], {}),6);
+        });
+        
+        test('lambda scope', function() {
+            assert.deepEqual(
+                evalScheem(['begin', ['set!', 'y', 5],
+                                     [['lambda','x',['set!','y',['+', 'x', 1]]],42],
+                                     ['+','x','y']
+                           ],{bindings:{x:1, y:2}}),
+                44
+            );
+        });
+        
+        test('lambda assigned', function() {
+            assert.deepEqual(
+                evalScheem(['begin', ['define','func',['lambda','x',['+','x',1]]],
+                                     ['func',5]
+                           ],{bindings:{x:1, y:2}}),
+                6
+            );
+        });
+  });
    
 });
 

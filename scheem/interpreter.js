@@ -194,6 +194,33 @@ function evalScheem(expr, env) {
             if (evalScheem(expr[1])==='#t')
                  return evalScheem(expr[2]);
             else return evalScheem(expr[3]);
+        case 'lambda':
+            return function(){
+                var newEnv = {
+                    bindings : {},
+                    outer : env
+                };
+                
+                if (typeof expr[1] === 'string') {
+                    expr[1] = [expr[1]];
+                }
+                
+                when(expr[1].length !== arguments.length).raise(expr,'The function expects '+expr[1].length+' parameters');
+                
+                for (var i=0,il=expr.length;i<il;i++){
+                    add_binding(newEnv,expr[1][i],arguments[i]);
+                }
+                
+                return evalScheem(expr[2],newEnv);
+                
+            };
+        default:
+            var func = evalScheem(expr[0], env),
+                args = [];
+            for (var i=1,il=expr.length;i<il;i++){
+                args.push(evalScheem(expr[i], env));
+            }
+            return func.apply(null,args);
     }
 }
 
