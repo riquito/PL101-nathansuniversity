@@ -54,7 +54,7 @@ function evalScheem(expr, env) {
     }
     // Strings are variable references
     if (typeof expr === 'string') {
-        return env[expr];
+        return lookup(env,expr);
     }
     // Look at head of list for operation
     switch (expr[0]) {
@@ -110,17 +110,19 @@ function evalScheem(expr, env) {
             when(expr.length > 3).raise(expr,'too many elements');
             when(expr.length < 3).raise(expr,'too few elements');
             
-            when(env[expr[1]] !== undefined).raise(expr[1],'not a new variable');
+            when(lookup(env,expr[1]) !== undefined).raise(expr[1],'not a new variable');
             
-            env[expr[1]] = evalScheem(expr[2],env);
+            add_binding(env,expr[1],evalScheem(expr[2],env));
+            
             return 0;
         case 'set!':
             when(expr.length > 3).raise(expr,'too many elements');
             when(expr.length < 3).raise(expr,'too few elements');
             
-            when(env[expr[1]] === undefined).raise(expr[1],'variable does not exist');
+            when(lookup(env,expr[1]) === undefined).raise(expr[1],'variable does not exist');
             
-            env[expr[1]] = evalScheem(expr[2],env);
+            update(env,expr[1],evalScheem(expr[2],env));
+            
             return 0;
         case 'begin':
             when(expr.length < 2).raise(expr,'too few elements');
@@ -194,6 +196,23 @@ function evalScheem(expr, env) {
             else return evalScheem(expr[3]);
     }
 }
+
+
+function lookup(env, v) {
+    if (env === undefined || !env.bindings) return undefined;
+    else if (env.bindings[v]!==undefined) return env.bindings[v];
+    else return lookup(env.outer,v);
+}
+
+function update(env, v, val) {
+    if (env.bindings && (env.bindings[v]!==undefined || !env.outer)) {
+      env.bindings[v] = val;
+    } else return update(env.outer,v,val);
+}
+
+function add_binding(env, v, val) {
+    env.bindings[v] = val;
+};
 
 module.exports = {
   evalScheem : evalScheem

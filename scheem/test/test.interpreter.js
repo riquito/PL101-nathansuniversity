@@ -144,19 +144,19 @@ suite('interpreter',function(){
    suite('define', function() {
         
         test('assign variable', function() {
-            var env = {'a':2,'b':3};
+            var env = {bindings:{'a':2,'b':3}};
             
             assert.deepEqual(
                 evalScheem(['define', 'x', 4], env),
                 0
             );
             
-            assert.deepEqual(env,{'a':2,'b':3,'x':4});
+            assert.deepEqual(env,{bindings:{'a':2,'b':3,'x':4}});
             
         });
         
         test('variable must not exist', function() {
-            var env = {'a':2,'b':3};
+            var env = {bindings:{'a':2,'b':3}};
             
             assert.throws(function(){
                 evalScheem(['define', 'a', 4], env)
@@ -169,19 +169,19 @@ suite('interpreter',function(){
    suite('set!', function() {
         
         test('modify variable', function() {
-            var env = {'a':2,'b':3};
+            var env = {bindings:{'a':2,'b':3}};
             
             assert.deepEqual(
                 evalScheem(['set!', 'b', 5], env),
                 0
             );
             
-            assert.deepEqual(env,{'a':2,'b':5});
+            assert.deepEqual(env,{bindings:{'a':2,'b':5}});
             
         });
         
         test('variable must exist', function() {
-            var env = {'a':2,'b':3};
+            var env = {bindings:{'a':2,'b':3}};
             
             assert.throws(function(){
                 evalScheem(['set!', 'c', 4], env)
@@ -215,7 +215,7 @@ suite('interpreter',function(){
         test('(begin x y x)', function() {
             
             assert.deepEqual(
-                evalScheem(['begin','x','y','x'],{x:1, y:2}),
+                evalScheem(['begin','x','y','x'],{bindings:{x:1, y:2}}),
                 1
             );
             
@@ -227,7 +227,7 @@ suite('interpreter',function(){
                 evalScheem(['begin', ['set!', 'x', 5], 
                                      ['set!', 'x', ['+', 'y', 'x']],
                                      'x'
-                           ],{x:1, y:2}),
+                           ],{bindings:{x:1, y:2}}),
                 7
             );
             
@@ -263,7 +263,7 @@ suite('interpreter',function(){
         test('must have at most an expression to quote', function() {
             
             assert.throws(function(){
-                evalScheem(['quote',1,2], env);
+                evalScheem(['quote',1,2], {});
             });
             
         });
