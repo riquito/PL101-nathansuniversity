@@ -151,7 +151,7 @@ suite('interpreter',function(){
                 0
             );
             
-            assert.deepEqual(env,{bindings:{'a':2,'b':3,'x':4}});
+            assert.deepEqual(env.bindings,{'a':2,'b':3,'x':4});
             
         });
         
@@ -176,7 +176,7 @@ suite('interpreter',function(){
                 0
             );
             
-            assert.deepEqual(env,{bindings:{'a':2,'b':5}});
+            assert.deepEqual(env.bindings,{'a':2,'b':5});
             
         });
         

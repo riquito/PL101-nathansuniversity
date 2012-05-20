@@ -196,10 +196,7 @@ function evalScheem(expr, env) {
             else return evalScheem(expr[3]);
         case 'lambda':
             return function(){
-                var newEnv = {
-                    bindings : {},
-                    outer : env
-                };
+                var newEnv = create_env({},env);
                 
                 if (typeof expr[1] === 'string') {
                     expr[1] = [expr[1]];
@@ -226,7 +223,7 @@ function evalScheem(expr, env) {
 
 
 function lookup(env, v) {
-    if (env === undefined || !env.bindings) return undefined;
+    if (env === null) return undefined;
     else if (env.bindings[v]!==undefined) return env.bindings[v];
     else return lookup(env.outer,v);
 }
@@ -241,6 +238,35 @@ function add_binding(env, v, val) {
     env.bindings[v] = val;
 };
 
+function create_env(bindings,outer){
+    return {
+        'bindings' : bindings || {},
+        'outer' : outer || null
+    };
+}
+
+var defaultBindings = {
+};
+
 module.exports = {
-  evalScheem : evalScheem
+  evalScheem : function(expr,env){
+    env = env || {bindings:{},outer:null};
+    
+    // normalize the environment, so that we accept {} but use always the
+    // structure {bindings:{},outer:null}
+    if (env.bindings === undefined) env.bindings = {};
+    if (env.outer === undefined) env.outer = null;
+    
+    var baseEnv = create_env();
+    
+    // copy the default bindings (ensure they'll be untouched but overwritable)
+    for (var key in defaultBindings){
+        add_binding(baseEnv,key,defaultBindings[key]);
+    }
+    
+    env.outer = baseEnv;
+    
+    return evalScheem(expr,env);
+    
+  }
 };
