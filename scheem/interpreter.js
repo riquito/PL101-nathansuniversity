@@ -88,33 +88,6 @@ function evalScheem(expr, env) {
             when(expr.length > 2).raise(expr,'too many elements');
             
             return expr[1];
-        case 'cons':
-            when(expr.length < 3).raise(expr,'too few elements');
-            when(expr.length > 3).raise(expr,'too many elements');
-            
-            var x = evalScheem(expr[2], env);
-            
-            when(!isArray(x)).raise(expr[2],'not an array');
-            
-            return [evalScheem(expr[1], env)].concat(x);
-        case 'car':
-            when(expr.length < 2).raise(expr,'too few elements');
-            when(expr.length > 2).raise(expr,'too many elements');
-            
-            var x = evalScheem(expr[1], env);
-            
-            when(!isArray(x)).raise(expr[1],'not an array');
-            
-            return x[0];
-        case 'cdr':
-            when(expr.length < 2).raise(expr,'too few elements');
-            when(expr.length > 2).raise(expr,'too many elements');
-            
-            var x = evalScheem(expr[1], env);
-            
-            when(!isArray(x)).raise(expr[1],'not an array');
-            
-            return x.slice(1);
         case 'if':
             when(expr.length < 4).raise(expr,'too few elements');
             when(expr.length > 4).raise(expr,'too many elements');
@@ -241,6 +214,36 @@ var defaultBindings = {
             when(args.length > 2).raise(['>'].concat(args),'too many elements');
             
             return a > b ? '#t' : '#f';
+    },
+    'cons' : function(head,tail){
+            var args =  Array.prototype.slice.call(arguments);
+            
+            when(args.length < 2).raise(['cons'].concat(args),'too few elements');
+            when(args.length > 2).raise(['cons'].concat(args),'too many elements');
+            
+            when(!isArray(tail)).raise(tail,'not an array');
+            
+            return [head].concat(tail);
+    },
+    'car' : function(list){
+            var args =  Array.prototype.slice.call(arguments);
+            
+            when(args.length < 1).raise(['car'].concat(args),'too few elements');
+            when(args.length > 1).raise(['car'].concat(args),'too many elements');
+            
+            when(!isArray(list)).raise(list,'not an array');
+            
+            return list[0];
+    },
+    'cdr' : function(list){
+            var args =  Array.prototype.slice.call(arguments);
+            
+            when(args.length < 1).raise(['cdr'].concat(args),'too few elements');
+            when(args.length > 1).raise(['cdr'].concat(args),'too many elements');
+            
+            when(!isArray(list)).raise(list,'not an array');
+            
+            return list.slice(1);
     }
 };
 
