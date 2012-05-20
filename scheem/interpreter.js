@@ -58,54 +58,6 @@ function evalScheem(expr, env) {
     }
     // Look at head of list for operation
     switch (expr[0]) {
-        case '+':
-            when(expr.length > 3).raise(expr,'too many elements');
-            when(expr.length < 3).raise(expr,'too few elements');
-            
-            var a = evalScheem(expr[1],env),
-                b = evalScheem(expr[2],env);
-            
-            when(!isNumber(a)).raise(a,'not a number');
-            when(!isNumber(b)).raise(b,'not a number');
-            
-            return a + b;
-        
-        case '-':
-            when(expr.length > 3).raise(expr,'too many elements');
-            when(expr.length < 3).raise(expr,'too few elements');
-            
-            var a = evalScheem(expr[1],env),
-                b = evalScheem(expr[2],env);
-            
-            when(!isNumber(a)).raise(a,'not a number');
-            when(!isNumber(b)).raise(b,'not a number');
-            
-            return a - b;
-        
-        case '*':
-            when(expr.length > 3).raise(expr,'too many elements');
-            when(expr.length < 3).raise(expr,'too few elements');
-            
-            var a = evalScheem(expr[1],env),
-                b = evalScheem(expr[2],env);
-            
-            when(!isNumber(a)).raise(a,'not a number');
-            when(!isNumber(b)).raise(b,'not a number');
-            
-            return a * b;
-        
-        case '/':
-            when(expr.length > 3).raise(expr,'too many elements');
-            when(expr.length < 3).raise(expr,'too few elements');
-            
-            var a = evalScheem(expr[1],env),
-                b = evalScheem(expr[2],env);
-            
-            when(!isNumber(a)).raise(a,'not a number');
-            when(!isNumber(b)).raise(b,'not a number');
-            
-            return a / b;
-        
         case 'define':
             when(expr.length > 3).raise(expr,'too many elements');
             when(expr.length < 3).raise(expr,'too few elements');
@@ -246,6 +198,50 @@ function create_env(bindings,outer){
 }
 
 var defaultBindings = {
+    '+' : function(a,b){
+        var args =  Array.prototype.slice.call(arguments);
+        
+        when(args.length > 2).raise(['+'].concat(args),'too many elements');
+        when(args.length < 2).raise(['+'].concat(args),'too few elements');
+        
+        when(!isNumber(a)).raise(a,'not a number');
+        when(!isNumber(b)).raise(b,'not a number');
+        
+        return a + b;
+    },
+    '-' : function(a,b){
+        var args =  Array.prototype.slice.call(arguments);
+        
+        when(args.length > 2).raise(['-'].concat(args),'too many elements');
+        when(args.length < 2).raise(['-'].concat(args),'too few elements');
+        
+        when(!isNumber(a)).raise(a,'not a number');
+        when(!isNumber(b)).raise(b,'not a number');
+        
+        return a - b;
+    },
+    '*' : function(a,b){
+        var args =  Array.prototype.slice.call(arguments);
+        
+        when(args.length > 2).raise(['*'].concat(args),'too many elements');
+        when(args.length < 2).raise(['*'].concat(args),'too few elements');
+        
+        when(!isNumber(a)).raise(a,'not a number');
+        when(!isNumber(b)).raise(b,'not a number');
+        
+        return a * b;
+    },
+    '/' : function(a,b){
+        var args =  Array.prototype.slice.call(arguments);
+        
+        when(args.length > 2).raise(['/'].concat(args),'too many elements');
+        when(args.length < 2).raise(['/'].concat(args),'too few elements');
+        
+        when(!isNumber(a)).raise(a,'not a number');
+        when(!isNumber(b)).raise(b,'not a number');
+        
+        return a / b;
+    }
 };
 
 module.exports = {
