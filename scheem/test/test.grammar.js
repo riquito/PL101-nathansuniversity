@@ -24,6 +24,26 @@ suite('grammar',function(){
         assert.deepEqual(parse("42"), 42);
     });
     
+    test("parse: 0",function(){
+        assert.deepEqual(parse("0"), 0);
+    });
+    
+    test("parse: 1",function(){
+        assert.deepEqual(parse("1"), 1);
+    });
+    
+    test("parse: 10",function(){
+        assert.deepEqual(parse("10"), 10);
+    });
+    
+    test("parse: -10",function(){
+        assert.deepEqual(parse("-10"), -10);
+    });
+    
+    test("parse: +10",function(){
+        assert.deepEqual(parse("+10"), 10);
+    });
+    
     test("parse: +",function(){
         assert.deepEqual(parse("+"), "+");
     });

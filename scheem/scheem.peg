@@ -26,8 +26,14 @@ validchar =
 atomString =
    a:validchar+ { return a.join(""); }
 
+singleDigitNumber = 
+    a:[0-9] { return parseInt(a); }
+
+multiDigitNumber = 
+    a:[1-9] b:[0-9]+ { return parseInt(a+b.join('')); }
+
 number =
-   a:[1-9] b:[0-9]* { return parseFloat(a+b.join("")); }
+    sign:('+'/'-')? a:(multiDigitNumber / singleDigitNumber) { return parseInt(sign+a); } 
 
 atom =
    a:number / a:atomString { return a; }
