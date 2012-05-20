@@ -582,6 +582,40 @@ suite('interpreter',function(){
             );
         });
   });
-   
+  
+  
+  suite('let', function() {
+        
+        test('let ((x 2)) (x)', function() {
+            var env = {bindings:{x:1}};
+            assert.deepEqual(evalScheem(['let',[['x',2]],'x'],env),2);
+            
+            assert.deepEqual(env.bindings,{'x':1});
+        });
+        
+        
+        test('let ((x 2),(y 3)) (+ x y)', function() {
+            var env = {bindings:{x:1}};
+            assert.deepEqual(evalScheem(['let',[['x',2],['y',3]],['+','x','y']],env),5);
+            
+            assert.deepEqual(env.bindings,{'x':1});
+        });
+        
+        
+        test('second parameter must be an array of pairs', function() {
+            
+            assert.throws(function(){
+                evalScheem(['let',['x',2],'x'], {});
+            });
+            
+            assert.throws(function(){
+                evalScheem(['let',[['x',2],['y']],'x'], {});
+            });
+            
+        });
+        
+  });
+  
+  
 });
 

@@ -95,6 +95,18 @@ function evalScheem(expr, env) {
             if (evalScheem(expr[1],env)==='#t')
                  return evalScheem(expr[2],env);
             else return evalScheem(expr[3],env);
+        case 'let':
+            var tmpEnv = create_env({},env);
+            
+            when(!isArray(expr[1])).raise(expr[1],'not an array');
+            
+            for (var i=0,il=expr[1].length;i<il;i++) {
+                when(!isArray(expr[1][i]) || expr[1][i].length !== 2).raise(expr[1][i],'not a two values array');
+                
+                add_binding(tmpEnv,expr[1][i][0],evalScheem(expr[1][i][1],env));
+            }
+            
+            return evalScheem(expr[2],tmpEnv);
         case 'lambda':
             return function(){
                 var newEnv = create_env({},env);
