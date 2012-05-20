@@ -1,9 +1,9 @@
-
+{arguments[0] = arguments[0].trim();}
 start =
    exprOrEmpty
 
 exprOrEmpty = 
-   a:expression / a:'' {a==='' ? undefined : a}
+   a:(expression / '') _* {return a==='' ? undefined : a; }
 
 expression =   
   atom  / atomList / quotedExpr
@@ -11,8 +11,14 @@ expression =
 spaceExpression =
   _+ a:expression {return a}
 
+lp = /* left parenthesis with spaces */
+  '(' _*
+
+rp = /* right parenthesis with spaces */
+  _* ')'
+
 atomList =
-  _* '(' _* a:expression b:spaceExpression* _* ')' _*  { return [a].concat(b); }
+  lp a:expression b:spaceExpression* rp  { return [a].concat(b); }
 
 validchar = 
    [0-9a-zA-Z_?!+\-=@#$%^&*/.]

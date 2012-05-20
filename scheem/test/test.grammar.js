@@ -32,6 +32,18 @@ suite('grammar',function(){
         assert.deepEqual(parse("(a b c)"),["a", "b", "c"]);
     });
     
+    test("parse: (a (b))",function(){
+        assert.deepEqual(parse("(a (b))"),["a", ["b"]]);
+    });
+    
+    test("parse: ((a) b)",function(){
+        assert.deepEqual(parse("((a) b)"),[["a"], "b"]);
+    });
+    
+    test("parse: ((a) (b))",function(){
+        assert.deepEqual(parse("((a) (b))"),[["a"], ["b"]]);
+    });
+    
     test("parse: (+ x 3)",function(){
         assert.deepEqual(parse("(+ x 3)"), ["+", "x", 3],"parse (+ x 3)");
     });
