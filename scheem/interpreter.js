@@ -244,6 +244,9 @@ var defaultBindings = {
             when(!isArray(list)).raise(list,'not an array');
             
             return list.slice(1);
+    },
+    'alert' : function(message){
+        console.log(message);
     }
 };
 
