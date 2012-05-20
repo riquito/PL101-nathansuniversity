@@ -88,30 +88,6 @@ function evalScheem(expr, env) {
             when(expr.length > 2).raise(expr,'too many elements');
             
             return expr[1];
-        case '=':
-            when(expr.length < 3).raise(expr,'too few elements');
-            when(expr.length > 3).raise(expr,'too many elements');
-            
-            var eq =
-                (evalScheem(expr[1], env) ===
-                 evalScheem(expr[2], env));
-            return eq ? '#t' : '#f';
-        case '<':
-            when(expr.length < 3).raise(expr,'too few elements');
-            when(expr.length > 3).raise(expr,'too many elements');
-            
-            var lt =
-                (evalScheem(expr[1], env) <
-                 evalScheem(expr[2], env));
-            return lt ? '#t' : '#f';
-        case '>':
-            when(expr.length < 3).raise(expr,'too few elements');
-            when(expr.length > 3).raise(expr,'too many elements');
-            
-            var gt =
-                (evalScheem(expr[1], env) >
-                 evalScheem(expr[2], env));
-            return gt ? '#t' : '#f';
         case 'cons':
             when(expr.length < 3).raise(expr,'too few elements');
             when(expr.length > 3).raise(expr,'too many elements');
@@ -143,9 +119,9 @@ function evalScheem(expr, env) {
             when(expr.length < 4).raise(expr,'too few elements');
             when(expr.length > 4).raise(expr,'too many elements');
             
-            if (evalScheem(expr[1])==='#t')
-                 return evalScheem(expr[2]);
-            else return evalScheem(expr[3]);
+            if (evalScheem(expr[1],env)==='#t')
+                 return evalScheem(expr[2],env);
+            else return evalScheem(expr[3],env);
         case 'lambda':
             return function(){
                 var newEnv = create_env({},env);
@@ -241,6 +217,30 @@ var defaultBindings = {
         when(!isNumber(b)).raise(b,'not a number');
         
         return a / b;
+    },
+    '=' : function(a,b){
+            var args =  Array.prototype.slice.call(arguments);
+            
+            when(args.length < 2).raise(['='].concat(args),'too few elements');
+            when(args.length > 2).raise(['='].concat(args),'too many elements');
+            
+            return a === b ? '#t' : '#f';
+    },
+    '<' : function(a,b){
+            var args =  Array.prototype.slice.call(arguments);
+            
+            when(args.length < 2).raise(['<'].concat(args),'too few elements');
+            when(args.length > 2).raise(['<'].concat(args),'too many elements');
+            
+            return a < b ? '#t' : '#f';
+    },
+    '>' : function(a,b){
+            var args =  Array.prototype.slice.call(arguments);
+            
+            when(args.length < 2).raise(['>'].concat(args),'too few elements');
+            when(args.length > 2).raise(['>'].concat(args),'too many elements');
+            
+            return a > b ? '#t' : '#f';
     }
 };
 
