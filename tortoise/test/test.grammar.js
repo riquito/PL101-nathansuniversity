@@ -51,3 +51,23 @@ suite('numbers',function(){
     });
 
 });
+
+suite('identifiers',function(){
+    
+    test("natural",function(){
+        assert.deepEqual(parse("name"), "name");
+        
+        assert.deepEqual(parse("name123"), "name123");
+        
+        assert.deepEqual(parse("name_123"), "name_123");
+        
+        assert.deepEqual(parse("an_identifier"), "an_identifier");
+        
+        assert.deepEqual(parse("_identifier"), "_identifier");
+        
+        assert.throws(function(){
+            parse("0_bad_identifer");
+        });
+    });
+    
+});

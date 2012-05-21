@@ -1,6 +1,13 @@
 {arguments[0] = arguments[0].trim();}
 start =
-   number / '' { return undefined; }
+   expression / '' { return undefined; }
+
+expression =
+  number / identifier
+
+/***************/
+/*** numbers ***/
+/***************/
 
 singleDigitNumber = 
     a:[0-9] { return parseInt(a); }
@@ -25,3 +32,9 @@ realNumber =
 
 number = 
   realNumber / integer
+
+/***************/
+
+identifier
+    = firstchar:[a-zA-Z_] chars:[0-9a-zA-Z_]*
+        { return firstchar + chars.join(''); }
