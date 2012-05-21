@@ -3,7 +3,15 @@ start =
    expression / '' { return undefined; }
 
 expression =
-  additive / number / identifier
+  comparative / identifier
+
+identifier
+    = firstchar:[a-zA-Z_] chars:[0-9a-zA-Z_]*
+        { return firstchar + chars.join(''); }
+
+ws = /* whitespace */
+   [ \r\n\f\t]* / ";;" [^\n]*
+
 
 /***************/
 /*** numbers ***/
@@ -35,12 +43,19 @@ number =
 
 /***************/
 
-identifier
-    = firstchar:[a-zA-Z_] chars:[0-9a-zA-Z_]*
-        { return firstchar + chars.join(''); }
 
-ws = /* whitespace */
-   [ \r\n\f\t]* / ";;" [^\n]*
+/****************************/
+/*** comparison operators ***/
+/****************************/
+
+comp_op = "<=" / ">=" / "!=" / "==" / "<" / ">"
+
+comparative
+    = left:additive ws op:comp_op ws right:comparative
+        { return {tag: op, left:left, right:right}; }
+    / additive
+
+/****************************/
 
 
 /******************************/
