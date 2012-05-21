@@ -71,3 +71,81 @@ suite('identifiers',function(){
     });
     
 });
+
+suite('arithmetic expressions',function(){
+    
+    test("without spaces",function(){
+        assert.deepEqual(parse("1+2"), {tag:"+",left:1,right:2});
+        assert.deepEqual(parse("1-2"), {tag:"-",left:1,right:2});
+        assert.deepEqual(parse("1*2"), {tag:"*",left:1,right:2});
+        assert.deepEqual(parse("1/2"), {tag:"/",left:1,right:2});
+        
+        assert.deepEqual(parse("-1+2"), {tag:"+",left:-1,right:2});
+        assert.deepEqual(parse("-1-2"), {tag:"-",left:-1,right:2});
+        assert.deepEqual(parse("-1*2"), {tag:"*",left:-1,right:2});
+        assert.deepEqual(parse("-1/2"), {tag:"/",left:-1,right:2});
+    });
+    
+    test("with spaces",function(){
+        assert.deepEqual(parse("1 + 2"), {tag:"+",left:1,right:2});
+        assert.deepEqual(parse("1 - 2"), {tag:"-",left:1,right:2});
+        assert.deepEqual(parse("1 * 2"), {tag:"*",left:1,right:2});
+        assert.deepEqual(parse("1 / 2"), {tag:"/",left:1,right:2});
+        
+        assert.deepEqual(parse("1 + -2"), {tag:"+",left:1,right:-2});
+        assert.deepEqual(parse("1 - -2"), {tag:"-",left:1,right:-2});
+        assert.deepEqual(parse("1 * -2"), {tag:"*",left:1,right:-2});
+        assert.deepEqual(parse("1 / -2"), {tag:"/",left:1,right:-2});
+    });
+    
+    test("with parenthesis but no spaces",function(){
+        assert.deepEqual(parse("(1)+2"), {tag:"+",left:1,right:2});
+        assert.deepEqual(parse("1+(2)"), {tag:"+",left:1,right:2});
+        
+        assert.deepEqual(parse("(1)-2"), {tag:"-",left:1,right:2});
+        assert.deepEqual(parse("1-(2)"), {tag:"-",left:1,right:2});
+        
+        assert.deepEqual(parse("(1)*2"), {tag:"*",left:1,right:2});
+        assert.deepEqual(parse("1*(2)"), {tag:"*",left:1,right:2});
+        
+        assert.deepEqual(parse("(1)/2"), {tag:"/",left:1,right:2});
+        assert.deepEqual(parse("1/(2)"), {tag:"/",left:1,right:2});
+        
+        assert.deepEqual(parse("1+(2+3)"), {tag:"+",left:1,right:{tag:"+",left:2,right:3}});
+        assert.deepEqual(parse("1+(2+3)"), {tag:"+",left:1,right:{tag:"+",left:2,right:3}});
+        
+        assert.deepEqual(parse("1-(2-3)"), {tag:"-",left:1,right:{tag:"-",left:2,right:3}});
+        assert.deepEqual(parse("1-(2-3)"), {tag:"-",left:1,right:{tag:"-",left:2,right:3}});
+        
+        assert.deepEqual(parse("1*(2+3)"), {tag:"*",left:1,right:{tag:"+",left:2,right:3}});
+        assert.deepEqual(parse("1*(2+3)"), {tag:"*",left:1,right:{tag:"+",left:2,right:3}});
+        
+        assert.deepEqual(parse("1/(2+2)"), {tag:"/",left:1,right:{tag:"+",left:2,right:2}});
+        assert.deepEqual(parse("1/(2+2)"), {tag:"/",left:1,right:{tag:"+",left:2,right:2}});
+    });
+    
+    test("with parenthesis and spaces",function(){
+        assert.deepEqual(parse("( 1)+2"),    {tag:"+",left:1,right:2});
+        assert.deepEqual(parse("1 + ( 2)"),  {tag:"+",left:1,right:2});
+        
+        assert.deepEqual(parse("( 1 ) - 2"), {tag:"-",left:1,right:2});
+        assert.deepEqual(parse("1 - ( 2)"),  {tag:"-",left:1,right:2});
+        
+        assert.deepEqual(parse("(  1) * 2"), {tag:"*",left:1,right:2});
+        assert.deepEqual(parse("1 * ( 2  )"),{tag:"*",left:1,right:2});
+        
+        assert.deepEqual(parse("(  1) / 2"), {tag:"/",left:1,right:2});
+        assert.deepEqual(parse("1 / ( 2  )"),{tag:"/",left:1,right:2});
+    });
+    
+    test("operators precedence",function(){
+        assert.deepEqual(parse("1+2*3"),   {tag:"+",left:1,right:{tag:"*",left:2,right:3}});
+        assert.deepEqual(parse("(1+2)*3"), {tag:"*",left:{tag:"+",left:1,right:2},right:3});
+        
+        assert.deepEqual(parse("3*4+5"),   {tag:"+",left:{tag:"*",left:3,right:4},right:5});
+        assert.deepEqual(parse("3*(4+5)"), {tag:"*",left:3,right:{tag:"+",left:4,right:5}});
+    });
+    
+    
+    
+});

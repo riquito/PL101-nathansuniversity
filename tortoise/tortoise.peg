@@ -3,7 +3,7 @@ start =
    expression / '' { return undefined; }
 
 expression =
-  number / identifier
+  additive / number / identifier
 
 /***************/
 /*** numbers ***/
@@ -38,3 +38,32 @@ number =
 identifier
     = firstchar:[a-zA-Z_] chars:[0-9a-zA-Z_]*
         { return firstchar + chars.join(''); }
+
+ws = /* whitespace */
+   [ \r\n\f\t]* / ";;" [^\n]*
+
+
+/******************************/
+/*** arithmetic expressions ***/
+/******************************/
+
+additive_op = "+" / "-"
+
+additive
+    = left:multiplicative ws op:additive_op ws right:additive
+        { return {tag:op, left:left, right:right}; }
+    / multiplicative
+
+mult_op = "*" / "/"
+
+multiplicative
+    = left:primary ws op:mult_op ws right:multiplicative
+        { return {tag:op, left:left, right:right}; }
+    / primary
+
+primary
+    = number
+    / "(" ws expr:additive ws ")"
+        { return expr; }
+
+/******************************/
