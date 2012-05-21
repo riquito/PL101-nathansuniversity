@@ -1,0 +1,27 @@
+{arguments[0] = arguments[0].trim();}
+start =
+   number / '' { return undefined; }
+
+singleDigitNumber = 
+    a:[0-9] { return parseInt(a); }
+
+multiDigitNumber = 
+    a:[1-9] b:[0-9]+ { return parseInt(a+b.join('')); }
+
+naturalNumber =
+    a:(multiDigitNumber / singleDigitNumber) { return parseInt(a); }
+
+integer = 
+    sign:('+'/'-')? n:naturalNumber { return parseInt(sign+n); }
+    
+decimal =
+   "." x:[0-9]+ { return parseFloat('0.'+x.join('')); }
+
+realNumber =
+    decimal_part:decimal 
+    / 
+    (int_part:integer decimal_part:decimal)
+       { return int_part + decimal_part * (int_part >= 0 ? 1 : -1); }
+
+number = 
+  realNumber / integer
