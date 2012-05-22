@@ -3,7 +3,7 @@ start =
    expression / '' { return undefined; }
 
 expression =
-  comparative / identifier
+  comparative
 
 comma_expression =
   "," ws expr:expression
@@ -104,3 +104,5 @@ primary
         { return {tag:"call", name:v, args:args}; }
     / "(" ws expr:expression ws ")"
         { return expr; }
+    / v:identifier
+      { return {tag:"ident",name:v}; }

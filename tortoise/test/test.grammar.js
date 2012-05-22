@@ -54,16 +54,16 @@ suite('numbers',function(){
 
 suite('identifiers',function(){
     
-    test("natural",function(){
-        assert.deepEqual(parse("name"), "name");
+    test("valid names",function(){
+        assert.deepEqual(parse("name"), {tag:"ident",name:"name"});
         
-        assert.deepEqual(parse("name123"), "name123");
+        assert.deepEqual(parse("name123"), {tag:"ident",name:"name123"});
         
-        assert.deepEqual(parse("name_123"), "name_123");
+        assert.deepEqual(parse("name_123"), {tag:"ident",name:"name_123"});
         
-        assert.deepEqual(parse("an_identifier"), "an_identifier");
+        assert.deepEqual(parse("an_identifier"), {tag:"ident",name:"an_identifier"});
         
-        assert.deepEqual(parse("_identifier"), "_identifier");
+        assert.deepEqual(parse("_identifier"), {tag:"ident",name:"_identifier"});
         
         assert.throws(function(){
             parse("0_bad_identifer");
@@ -184,18 +184,19 @@ suite('function calls',function(){
     
     test("function call with a single parameter",function(){
         assert.deepEqual(parse("foo(1)"),    {tag:"call",name:"foo",args:[1]});
-        assert.deepEqual(parse("foo(bar)"),  {tag:"call",name:"foo",args:["bar"]});
-        assert.deepEqual(parse("foo( baz )"),{tag:"call",name:"foo",args:["baz"]});
+        assert.deepEqual(parse("foo(bar)"),  {tag:"call",name:"foo",args:[{tag:"ident",name:"bar"}]});
+        assert.deepEqual(parse("foo( baz )"),{tag:"call",name:"foo",args:[{tag:"ident",name:"baz"}]});
     });
     
     test("function call with many parameters",function(){
-        assert.deepEqual(parse("foo(1,bar)"), {tag:"call",name:"foo",args:[1,"bar"]});
-        assert.deepEqual(parse("foo( 1, bar,baz )"), {tag:"call",name:"foo",args:[1,"bar","baz"]});
+        assert.deepEqual(parse("foo(1,bar)"), {tag:"call",name:"foo",args:[1,{tag:"ident",name:"bar"}]});
+        assert.deepEqual(parse("foo( 1, bar,baz )"), {tag:"call",name:"foo",args:[1,{tag:"ident",name:"bar"},{tag:"ident",name:"baz"}]});
     });
     
     test("function call with expressions",function(){
         assert.deepEqual(parse("foo(1+2)"), {tag:"call",name:"foo",args:[{tag:"+",left:1,right:2}]});
         assert.deepEqual(parse("foo(1,2+3)"), {tag:"call",name:"foo",args:[1,{tag:"+",left:2,right:3}]});
+        assert.deepEqual(parse("foo(1>2)"), {tag:"call",name:"foo",args:[{tag:">",left:1,right:2}]});
     });
     
 });
