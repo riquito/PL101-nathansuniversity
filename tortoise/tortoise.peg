@@ -5,6 +5,10 @@ start =
 expression =
   comparative / identifier
 
+comma_expression =
+  "," ws expr:expression
+    { return expr; }
+
 identifier
     = firstchar:[a-zA-Z_] chars:[0-9a-zA-Z_]*
         { return firstchar + chars.join(''); }
@@ -76,9 +80,27 @@ multiplicative
         { return {tag:op, left:left, right:right}; }
     / primary
 
+/******************************/
+
+
+/**********************/
+/*** function calls ***/
+/**********************/
+
+arglist
+    = first:expression rest:comma_expression*
+        { return [first].concat(rest); }
+
+/**********************/
+
+
 primary
     = number
     / "(" ws expr:additive ws ")"
         { return expr; }
-
-/******************************/
+    / v:identifier "(" ws ")"
+        { return {tag:"call", name:v, args:[]}; }
+    / v:identifier "(" ws args:arglist ws ")"
+        { return {tag:"call", name:v, args:args}; }
+    / "(" ws expr:expression ws ")"
+        { return expr; }

@@ -175,3 +175,27 @@ suite('comparison operators',function(){
     });
     
 });
+
+suite('function calls',function(){
+    
+    test("function call without parameters",function(){
+        assert.deepEqual(parse("foo()"), {tag:"call",name:"foo",args:[]});
+    });
+    
+    test("function call with a single parameter",function(){
+        assert.deepEqual(parse("foo(1)"),    {tag:"call",name:"foo",args:[1]});
+        assert.deepEqual(parse("foo(bar)"),  {tag:"call",name:"foo",args:["bar"]});
+        assert.deepEqual(parse("foo( baz )"),{tag:"call",name:"foo",args:["baz"]});
+    });
+    
+    test("function call with many parameters",function(){
+        assert.deepEqual(parse("foo(1,bar)"), {tag:"call",name:"foo",args:[1,"bar"]});
+        assert.deepEqual(parse("foo( 1, bar,baz )"), {tag:"call",name:"foo",args:[1,"bar","baz"]});
+    });
+    
+    test("function call with expressions",function(){
+        assert.deepEqual(parse("foo(1+2)"), {tag:"call",name:"foo",args:[{tag:"+",left:1,right:2}]});
+        assert.deepEqual(parse("foo(1,2+3)"), {tag:"call",name:"foo",args:[1,{tag:"+",left:2,right:3}]});
+    });
+    
+});
