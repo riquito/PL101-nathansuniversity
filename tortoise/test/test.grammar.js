@@ -239,4 +239,22 @@ suite('statements',function(){
         assert.deepEqual(parse("repeat ( 1+2) {}"), [{tag:"repeat",expr:{tag:"+",left:1,right:2},body:[]}]);
     });
     
+    test("define statement",function(){
+        assert.deepEqual(parse("define foo(){}"),     [{tag:"define",name:"foo",args:[],body:[]}]);
+        assert.deepEqual(parse("define  foo(  ){  }"),[{tag:"define",name:"foo",args:[],body:[]}]);
+        
+        assert.deepEqual(parse("define foo(a){}"),        [{tag:"define",name:"foo",args:['a'],body:[]}]);
+        assert.deepEqual(parse("define foo(  a ){ \n }"), [{tag:"define",name:"foo",args:['a'],body:[]}]);
+        
+        assert.deepEqual(parse("define foo(a,b){}"),      [{tag:"define",name:"foo",args:['a','b'],body:[]}]);
+        assert.deepEqual(parse("define foo( a , b ){}"),  [{tag:"define",name:"foo",args:['a','b'],body:[]}]);
+        
+        
+        
+        assert.throws(function(){
+            parse("define foo(1){}");
+        });
+        
+    });
+    
 });

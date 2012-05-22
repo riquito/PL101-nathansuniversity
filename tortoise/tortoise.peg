@@ -117,6 +117,23 @@ statement
       /
       "repeat" ws "(" ws e:expression ws ")" ws "{" v:statements "}"
         { return {tag:'repeat',expr:e,body:v};}
+      /
+      "define " ws v:identifier ws "(" ws ")" ws
+      "{" ws body:statements ws "}" ws
+        
+        { return { tag:"define", name:v, args:[], body:body }; }
+      /
+      "define " ws v:identifier ws "(" ws args:ident_list ws ")" ws
+      "{" ws body:statements ws "}" ws
+          
+        { return { tag:"define", name:v, args:args, body:body }; }
+  
+comma_identifier = "," ws v:identifier
+        { return v; }
+
+ident_list
+    = first:identifier ws rest:comma_identifier*
+        { return [first].concat(rest); }
 
 /******************/
 
