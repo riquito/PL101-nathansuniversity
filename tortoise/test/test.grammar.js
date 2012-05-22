@@ -200,3 +200,43 @@ suite('function calls',function(){
     });
     
 });
+
+
+suite('statements',function(){
+    
+    test("declaration",function(){
+        assert.deepEqual(parse("var x;"), [{tag:"var",name:"x"}]);
+        assert.deepEqual(parse("var foo ;"), [{tag:"var",name:"foo"}]);
+        
+        assert.throws(function(){
+            parse("var 1;");
+        });
+    });
+    
+    test("assignment",function(){
+        assert.deepEqual(parse("x := 2;"), [{tag:":=",left:"x",right:2}]);
+        assert.deepEqual(parse("x := 2  ;"), [{tag:":=",left:"x",right:2}]);
+        assert.deepEqual(parse("x := 1+2;"), [{tag:":=",left:"x",right:{tag:'+',left:1,right:2}}]);
+        
+        assert.throws(function(){
+            parse("1 := 2");
+        });
+    });
+    
+    test("if statement",function(){
+        assert.deepEqual(parse("if(1){}"),   [{tag:"if",expr:1,body:[]}]);
+        assert.deepEqual(parse("if (1) {}"), [{tag:"if",expr:1,body:[]}]);
+        
+        assert.deepEqual(parse("if(1+2){}"),    [{tag:"if",expr:{tag:"+",left:1,right:2},body:[]}]);
+        assert.deepEqual(parse("if ( 1+2) {}"), [{tag:"if",expr:{tag:"+",left:1,right:2},body:[]}]);
+    });
+    
+    test("repeat statement",function(){
+        assert.deepEqual(parse("repeat(1){}"),   [{tag:"repeat",expr:1,body:[]}]);
+        assert.deepEqual(parse("repeat (1) {}"), [{tag:"repeat",expr:1,body:[]}]);
+        
+        assert.deepEqual(parse("repeat(1+2){}"),    [{tag:"repeat",expr:{tag:"+",left:1,right:2},body:[]}]);
+        assert.deepEqual(parse("repeat ( 1+2) {}"), [{tag:"repeat",expr:{tag:"+",left:1,right:2},body:[]}]);
+    });
+    
+});

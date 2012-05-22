@@ -1,6 +1,7 @@
 {arguments[0] = arguments[0].trim();}
 start =
-   expression / '' { return undefined; }
+   a:statement b:statements { return [a].concat(b); }
+   / expression / '' { return undefined; }
 
 expression =
   comparative
@@ -14,7 +15,7 @@ identifier
         { return firstchar + chars.join(''); }
 
 ws = /* whitespace */
-   [ \r\n\f\t]* / ";;" [^\n]*
+   [ \r\n\f\t]* 
 
 
 /***************/
@@ -93,6 +94,31 @@ arglist
 
 /**********************/
 
+
+/******************/
+/*** statements ***/
+/******************/
+
+statements = statement*
+
+declaration = 
+   "var"[ \r\n\f\t]+ v:identifier ws ';' { return v; }
+
+statement
+    = 
+      v:declaration
+        { return {tag:'var',name:v}; }
+      /
+      v:identifier ws ":=" ws expr:expression ws ";"
+        { return { tag:":=", left:v, right:expr }; }
+      /
+      "if" ws "(" ws e:expression ws ")" ws "{" b:statements ws "}"
+        { return {tag:'if',expr:e,body:b} }
+      /
+      "repeat" ws "(" ws e:expression ws ")" ws "{" v:statements "}"
+        { return {tag:'repeat',expr:e,body:v};}
+
+/******************/
 
 primary
     = number
