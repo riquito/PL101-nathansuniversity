@@ -29,7 +29,7 @@ function evalExpr(expr, env) {
             for(var i=0,il=expr.args.length;i<il;i++) {
                 ev_args.push(evalExpr(expr.args[i],env));
             }
-            if (expr.tag==='>') console.log('fyn',func);
+            
             return func.apply(null, ev_args);
     }
 }
@@ -62,6 +62,20 @@ var evalStatement = function (stmt, env) {
                 res = evalStatements(stmt.body,env);
             }
             return res;
+        case 'define':
+            var func = function() {
+                var new_bindings = { };
+                for(var i=0,il=stmt.args.length; i<il; i++) {
+                    new_bindings[stmt.args[i]] = arguments[i];
+                }
+                
+                var newEnv = create_env(new_bindings,env);
+                
+                return evalStatements(stmt.body,newEnv);
+            };
+            
+            add_binding(env,stmt.name,func);
+            return 0;
     }
 };
 

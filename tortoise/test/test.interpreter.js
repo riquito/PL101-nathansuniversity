@@ -232,6 +232,24 @@ suite('interpreter',function(){
             
         });
         
+        test('define', function() {
+            var env = { bindings: { x:1, y:3 }, outer: null };
+            
+            assert.deepEqual(
+                evalStatement({tag:'if',expr:{tag:'==',left:1,right:1},body:[
+                    {tag:"define",name:"foo",args:['x'],
+                        body:[
+                            {tag:':=',left:'x',right:{tag:'+',left:42,right:{tag:'ident',name:'x'}}},
+                            {tag:'ignore',body: {tag:'+',left:0,right:{tag:'ident',name:'x'}}}
+                    ]},
+                    {tag:'ignore',body:{tag:'call',name:'foo',args:[{tag:'ident',name:'x'}]}}
+                    ]}, env),
+                43
+            );
+            
+            assert.ok(env.bindings.x === 1);
+            
+        });
         
     });
 });
