@@ -45,6 +45,11 @@ var evalStatement = function (stmt, env) {
             // New variable gets default value of 0
             add_binding(env, stmt.name, 0);
             return 0;
+        case ':=':
+            // Evaluate right hand side
+            var val = evalExpr(stmt.right, env);
+            update(env, stmt.left, val);
+            return val;
     }
 };
 

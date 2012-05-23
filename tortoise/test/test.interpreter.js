@@ -174,6 +174,18 @@ suite('interpreter',function(){
             
         });
         
+        test('assignment', function() {
+            var env = { bindings: { x:2, y:3 }, outer: { } };
+            
+            assert.deepEqual(
+                evalStatement({tag:':=',left:"x",right:{tag:'+',left:1,right:2}}, env),
+                3
+            );
+            
+            assert.deepEqual(env.bindings,{ x:3, y:3 });
+            
+        });
+        
         
         
     });
