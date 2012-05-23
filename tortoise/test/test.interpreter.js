@@ -90,6 +90,52 @@ suite('interpreter',function(){
         });
         
 
-   });
+    });
+    
+    suite('comparisons',function(){
+        
+        test('==', function() {
+            assert.isTrue(evalTortoise({tag:'==',left:0,right:0}, {}));
+            assert.isTrue(evalTortoise({tag:'==',left:1,right:1}, {}));
+        });
+        
+        test('!=', function() {
+            assert.isFalse(evalTortoise({tag:'!=',left:0,right:0}, {}));
+            assert.isFalse(evalTortoise({tag:'!=',left:1,right:1}, {}));
+        });
+        
+        test('>', function() {
+            assert.isTrue(evalTortoise({tag:'>',left:1,right:0}, {}));
+            assert.isTrue(evalTortoise({tag:'>',left:1,right:-1}, {}));
+            
+            assert.isFalse(evalTortoise({tag:'>',left:0,right:0}, {}));
+            assert.isFalse(evalTortoise({tag:'>',left:1,right:1}, {}));
+        });
+        
+        test('<', function() {
+            assert.isTrue(evalTortoise({tag:'<',left:0,right:1}, {}));
+            assert.isTrue(evalTortoise({tag:'<',left:-1,right:1}, {}));
+            
+            assert.isFalse(evalTortoise({tag:'<',left:0,right:0}, {}));
+            assert.isFalse(evalTortoise({tag:'<',left:1,right:1}, {}));
+        });
+        
+        test('>=', function() {
+            assert.isTrue(evalTortoise({tag:'>=',left:1,right:0}, {}));
+            assert.isTrue(evalTortoise({tag:'>=',left:1,right:-1}, {}));
+            
+            assert.isTrue(evalTortoise({tag:'>=',left:0,right:0}, {}));
+            assert.isTrue(evalTortoise({tag:'>=',left:1,right:1}, {}));
+        });
+        
+        test('<=', function() {
+            assert.isTrue(evalTortoise({tag:'<=',left:0,right:1}, {}));
+            assert.isTrue(evalTortoise({tag:'<=',left:-1,right:1}, {}));
+            
+            assert.isTrue(evalTortoise({tag:'<=',left:0,right:0}, {}));
+            assert.isTrue(evalTortoise({tag:'<=',left:1,right:1}, {}));
+        });
+        
+    });
     
 });

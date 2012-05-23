@@ -15,6 +15,12 @@ function evalExpr(expr, env) {
         case '-':
         case '*':
         case '/':
+        case '<':
+        case '>':
+        case '>=':
+        case '<=':
+        case '==':
+        case '!=':
             return evalExpr({tag:'call',name:expr.tag,args:[expr.left,expr.right]},env);
         case 'call':
             // Get function value
@@ -25,6 +31,7 @@ function evalExpr(expr, env) {
             for(var i=0,il=expr.args.length;i<il;i++) {
                 ev_args.push(evalExpr(expr.args[i],env));
             }
+            if (expr.tag==='>') console.log('fyn',func);
             return func.apply(null, ev_args);
     }
 }
@@ -64,6 +71,14 @@ function arithmeticOperators(op,args,cb){
     return cb.apply(null,args);
 }
 
+function comparisonOperators(op,args,cb){
+    
+    when(args.length > 2).raise([op].concat(args),'too many elements');
+    when(args.length < 2).raise([op].concat(args),'too few elements');
+    
+    return cb.apply(null,args);
+}
+
 var defaultBindings = {
     '+' : function(a,b){
         return arithmeticOperators('+',[a,b],function(a,b){ return a + b; });
@@ -76,6 +91,24 @@ var defaultBindings = {
     },
     '/' : function(a,b){
         return arithmeticOperators('/',[a,b],function(a,b){ return a / b; });
+    },
+    '==' : function(a,b){
+        return comparisonOperators('==',[a,b],function(a,b){ return a === b; });
+    },
+    '!=' : function(a,b){
+        return comparisonOperators('!=',[a,b],function(a,b){ return a !== b; });
+    },
+    '<' : function(a,b){
+        return comparisonOperators('<',[a,b],function(a,b){ return a < b; });
+    },
+    '>' : function(a,b){
+        return comparisonOperators('>',[a,b],function(a,b){ return a > b; });
+    },
+    '<=' : function(a,b){
+        return comparisonOperators('<=',[a,b],function(a,b){ return a <= b; });
+    },
+    '>=' : function(a,b){
+        return comparisonOperators('>=',[a,b],function(a,b){ return a >= b; });
     }
 };
 
