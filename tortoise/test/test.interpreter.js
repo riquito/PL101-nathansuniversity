@@ -2,7 +2,9 @@
 
 var assert = require('chai').assert;
 
-var evalTortoise = require(__dirname+'/../interpreter.js').evalTortoise;
+var interpreter = require(__dirname+'/../interpreter.js'),
+    evalTortoise = interpreter.evalTortoise,
+    evalStatement = interpreter.evalStatement;
 
 
 suite('interpreter',function(){
@@ -138,7 +140,6 @@ suite('interpreter',function(){
         
     });
     
-    
     suite('variables',function(){
         
         var env = { bindings: { x:2, y:3 }, outer: { } };
@@ -152,4 +153,14 @@ suite('interpreter',function(){
         
     });
     
+    suite('statements',function(){
+        
+        test('expression', function() {
+            assert.deepEqual(
+                evalStatement({tag:'ignore',body:{tag:'+',left:1,right:2}}, {}),
+                3
+            );
+        });
+        
+    });
 });

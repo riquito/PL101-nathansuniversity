@@ -34,6 +34,16 @@ function evalExpr(expr, env) {
     }
 }
 
+var evalStatement = function (stmt, env) {
+    // Statements always have tags
+    switch(stmt.tag) {
+        // A single expression
+        case 'ignore':
+            // Just evaluate expression
+            return evalExpr(stmt.body, env);
+    }
+};
+
 
 function lookup(env, v) {
     if (env === null) return undefined;
@@ -176,6 +186,26 @@ module.exports = {
     env.outer = baseEnv;
     
     return evalExpr(expr,env);
+    
+  },
+  evalStatement : function(stmt,env){
+    env = env || {bindings:{},outer:null};
+    
+    // normalize the environment, so that we accept {} but use always the
+    // structure {bindings:{},outer:null}
+    if (env.bindings === undefined) env.bindings = {};
+    if (env.outer === undefined) env.outer = null;
+    
+    var baseEnv = create_env();
+    
+    // copy the default bindings (ensure they'll be untouched but overwritable)
+    for (var key in defaultBindings){
+        add_binding(baseEnv,key,defaultBindings[key]);
+    }
+    
+    env.outer = baseEnv;
+    
+    return evalStatement(stmt,env);
     
   }
 };
