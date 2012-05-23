@@ -56,6 +56,12 @@ var evalStatement = function (stmt, env) {
                 val = evalStatements(stmt.body,env);
             }
             return val;
+        case 'repeat':
+            var res = undefined;
+            for (var i=0,il=evalExpr(stmt.expr,env);i<il;i++) {
+                res = evalStatements(stmt.body,env);
+            }
+            return res;
     }
 };
 
@@ -206,7 +212,9 @@ module.exports = {
         add_binding(baseEnv,key,defaultBindings[key]);
     }
     
-    env.outer = baseEnv;
+    var tmp = env;
+    while (tmp.outer) tmp = tmp.outer;
+    tmp.outer = baseEnv;
     
     return evalExpr(expr,env);
     
@@ -226,7 +234,9 @@ module.exports = {
         add_binding(baseEnv,key,defaultBindings[key]);
     }
     
-    env.outer = baseEnv;
+    var tmp = env;
+    while (tmp.outer) tmp = tmp.outer;
+    tmp.outer = baseEnv;
     
     return evalStatement(stmt,env);
     

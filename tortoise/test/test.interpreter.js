@@ -142,7 +142,7 @@ suite('interpreter',function(){
     
     suite('variables',function(){
         
-        var env = { bindings: { x:2, y:3 }, outer: { } };
+        var env = { bindings: { x:2, y:3 }, outer: null };
         
         test('x + y', function() {
             assert.deepEqual(
@@ -163,7 +163,7 @@ suite('interpreter',function(){
         });
         
         test('declare variable', function() {
-            var env = { bindings: { x:2, y:3 }, outer: { } };
+            var env = { bindings: { x:2, y:3 }, outer: null };
             
             assert.deepEqual(
                 evalStatement({tag:'var',name:"z"}, env),
@@ -175,7 +175,7 @@ suite('interpreter',function(){
         });
         
         test('assignment', function() {
-            var env = { bindings: { x:2, y:3 }, outer: { } };
+            var env = { bindings: { x:2, y:3 }, outer: null };
             
             assert.deepEqual(
                 evalStatement({tag:':=',left:"x",right:{tag:'+',left:1,right:2}}, env),
@@ -184,10 +184,21 @@ suite('interpreter',function(){
             
             assert.deepEqual(env.bindings,{ x:3, y:3 });
             
+            // test inner scope assignment
+            var env = { bindings: { x:2, y:3 }, outer: { bindings:{ z:4 }, outer: null } };
+            
+            assert.deepEqual(
+                evalStatement({tag:':=',left:"z",right:42}, env),
+                42
+            );
+            
+            assert.deepEqual(env.outer.bindings,{ z:42 });
+            
+            
         });
         
         test('if', function() {
-            var env = { bindings: { x:2, y:3 }, outer: { } };
+            var env = { bindings: { x:2, y:3 }, outer: null };
             
             assert.deepEqual(
                 evalStatement({tag:'if',expr:{tag:'==',left:1,right:1},body:[
@@ -209,6 +220,17 @@ suite('interpreter',function(){
             
         });
         
+        test('repeat', function() {
+            var env = { bindings: { x:0, y:3 }, outer: null };
+            
+            evalStatement({tag:'repeat',expr:{tag:'*',left:2,right:3},
+                body:[
+                    {tag:':=',left:'x',right:{tag:'+',left:{tag:'ident',name:'x'},right:1}}
+                ]}, env);
+            
+            assert.deepEqual(env.bindings,{ x:6, y:3 });
+            
+        });
         
         
     });
