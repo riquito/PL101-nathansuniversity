@@ -105,7 +105,9 @@ declaration =
    "var"[ \r\n\f\t]+ v:identifier ws ';' { return v; }
 
 statement
-    = 
+    = expr:expression ws ";" ws
+        { return { tag:"ignore", body:expr }; }
+      /
       v:declaration
         { return {tag:'var',name:v}; }
       /

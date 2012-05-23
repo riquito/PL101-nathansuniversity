@@ -257,4 +257,9 @@ suite('statements',function(){
         
     });
     
+    test("expression as statement",function(){
+        assert.deepEqual(parse("1 + 2;  "), [{tag:"ignore",body:{tag:'+',left:1,right:2}}]);
+    });
+    
+    
 });
