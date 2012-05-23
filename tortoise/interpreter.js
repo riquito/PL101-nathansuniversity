@@ -41,6 +41,10 @@ var evalStatement = function (stmt, env) {
         case 'ignore':
             // Just evaluate expression
             return evalExpr(stmt.body, env);
+        case 'var':
+            // New variable gets default value of 0
+            add_binding(env, stmt.name, 0);
+            return 0;
     }
 };
 

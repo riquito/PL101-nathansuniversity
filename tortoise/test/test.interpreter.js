@@ -162,5 +162,19 @@ suite('interpreter',function(){
             );
         });
         
+        test('declare variable', function() {
+            var env = { bindings: { x:2, y:3 }, outer: { } };
+            
+            assert.deepEqual(
+                evalStatement({tag:'var',name:"z"}, env),
+                0
+            );
+            
+            assert.deepEqual(env.bindings,{ x:2, y:3, z:0 });
+            
+        });
+        
+        
+        
     });
 });
