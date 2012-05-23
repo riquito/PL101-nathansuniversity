@@ -138,4 +138,18 @@ suite('interpreter',function(){
         
     });
     
+    
+    suite('variables',function(){
+        
+        var env = { bindings: { x:2, y:3 }, outer: { } };
+        
+        test('x + y', function() {
+            assert.deepEqual(
+                evalTortoise({tag:'+',left:{tag:'ident',name:'x'},right:{tag:'ident',name:'y'}}, env),
+                5
+            );
+        });
+        
+    });
+    
 });

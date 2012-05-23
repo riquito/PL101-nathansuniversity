@@ -5,10 +5,6 @@ function evalExpr(expr, env) {
     if (typeof expr === 'number') {
         return expr;
     }
-    // Strings are variable references
-    if (typeof expr === 'string') {
-        return lookup(env,expr);
-    }
     // Look at head of list for operation
     switch (expr.tag) {
         case '+':
@@ -22,6 +18,8 @@ function evalExpr(expr, env) {
         case '==':
         case '!=':
             return evalExpr({tag:'call',name:expr.tag,args:[expr.left,expr.right]},env);
+        case 'ident':
+            return lookup(env,expr.name);
         case 'call':
             // Get function value
             var func = lookup(env, expr.name);
