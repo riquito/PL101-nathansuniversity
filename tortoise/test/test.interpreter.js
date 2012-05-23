@@ -186,6 +186,29 @@ suite('interpreter',function(){
             
         });
         
+        test('if', function() {
+            var env = { bindings: { x:2, y:3 }, outer: { } };
+            
+            assert.deepEqual(
+                evalStatement({tag:'if',expr:{tag:'==',left:1,right:1},body:[
+                    {tag:':=',left:"x",right:5},
+                    {tag:'ignore',body:{tag:'+',left:1,right:2}}
+                    
+                    ]}, env),
+                3
+            );
+            
+            assert.deepEqual(env.bindings,{ x:5, y:3 });
+            
+            assert.deepEqual(
+                evalStatement({tag:'if',expr:{tag:'==',left:1,right:2},body:[
+                    {tag:'ignore',body: {tag:'+',left:1,right:2}}
+                    ]}, {}),
+                undefined
+            );
+            
+        });
+        
         
         
     });

@@ -50,7 +50,21 @@ var evalStatement = function (stmt, env) {
             var val = evalExpr(stmt.right, env);
             update(env, stmt.left, val);
             return val;
+        case 'if':
+            var val = undefined;
+            if (evalExpr(stmt.expr,env)) {
+                val = evalStatements(stmt.body,env);
+            }
+            return val;
     }
+};
+
+var evalStatements = function (seq, env) {
+    var val = undefined;
+    for (var i=0,il=seq.length; i<il; i++) {
+        val = evalStatement(seq[i], env);
+    }
+    return val;
 };
 
 
