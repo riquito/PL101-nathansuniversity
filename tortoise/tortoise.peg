@@ -114,7 +114,7 @@ statement
       v:identifier ws ":=" ws expr:expression ws ";"
         { return { tag:":=", left:v, right:expr }; }
       /
-      "if" ws "(" ws e:expression ws ")" ws "{" b:statements ws "}"
+      "if" ws "(" ws e:expression ws ")" ws "{" ws b:statements ws "}"
         { return {tag:'if',expr:e,body:b} }
       /
       "repeat" ws "(" ws e:expression ws ")" ws "{" v:statements "}"

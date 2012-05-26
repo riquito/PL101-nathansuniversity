@@ -241,16 +241,14 @@ suite('statements',function(){
     
     test("define statement",function(){
         assert.deepEqual(parse("define foo(){}"),     [{tag:"define",name:"foo",args:[],body:[]}]);
-        assert.deepEqual(parse("define  foo(  ){  }"),[{tag:"define",name:"foo",args:[],body:[]}]);
+        assert.deepEqual(parse("define  foo(  ) {  }"),[{tag:"define",name:"foo",args:[],body:[]}]);
         
         assert.deepEqual(parse("define foo(a){}"),        [{tag:"define",name:"foo",args:['a'],body:[]}]);
-        assert.deepEqual(parse("define foo(  a ){ \n }"), [{tag:"define",name:"foo",args:['a'],body:[]}]);
+        assert.deepEqual(parse("define foo(  a )  { \n }"), [{tag:"define",name:"foo",args:['a'],body:[]}]);
         
         assert.deepEqual(parse("define foo(a,b){}"),      [{tag:"define",name:"foo",args:['a','b'],body:[]}]);
-        assert.deepEqual(parse("define foo( a , b ){}"),  [{tag:"define",name:"foo",args:['a','b'],body:[]}]);
-        
-        
-        
+        assert.deepEqual(parse("define foo( a , b )\n{}"),  [{tag:"define",name:"foo",args:['a','b'],body:[]}]);
+            
         assert.throws(function(){
             parse("define foo(1){}");
         });
