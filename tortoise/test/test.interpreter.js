@@ -3,7 +3,7 @@
 var assert = require('chai').assert;
 
 var interpreter = require(__dirname+'/../interpreter.js'),
-    evalTortoise = interpreter.evalTortoise,
+    evalExpr = interpreter.evalExpr,
     evalStatement = interpreter.evalStatement;
 
 
@@ -13,14 +13,14 @@ suite('interpreter',function(){
         
         test('two numbers', function() {
             assert.deepEqual(
-                evalTortoise({tag:'+',left:3,right:5}, {}),
+                evalExpr({tag:'+',left:3,right:5}, {}),
                 8
             );
         });
         
         test('a number and an expression', function() {
             assert.deepEqual(
-                evalTortoise({tag:'+',left:3,right:{tag:'+',left:2,right:2}}, {}),
+                evalExpr({tag:'+',left:3,right:{tag:'+',left:2,right:2}}, {}),
                 7
             );
         });
@@ -31,14 +31,14 @@ suite('interpreter',function(){
         
         test('two numbers', function() {
             assert.deepEqual(
-                evalTortoise({tag:'-',left:3,right:5}, {}),
+                evalExpr({tag:'-',left:3,right:5}, {}),
                 -2
             );
         });
         
         test('a number and an expression', function() {
             assert.deepEqual(
-                evalTortoise({tag:'-',left:3,right:{tag:'-',left:2,right:2}}, {}),
+                evalExpr({tag:'-',left:3,right:{tag:'-',left:2,right:2}}, {}),
                 3
             );
         });
@@ -49,14 +49,14 @@ suite('interpreter',function(){
         
         test('two numbers', function() {
             assert.deepEqual(
-                evalTortoise({tag:'*',left:3,right:5}, {}),
+                evalExpr({tag:'*',left:3,right:5}, {}),
                 15
             );
         });
         
         test('a number and an expression', function() {
             assert.deepEqual(
-                evalTortoise({tag:'*',left:-3,right:{tag:'*',left:2,right:4}}, {}),
+                evalExpr({tag:'*',left:-3,right:{tag:'*',left:2,right:4}}, {}),
                 -24
             );
         });
@@ -67,27 +67,27 @@ suite('interpreter',function(){
         
         test('two numbers', function() {
             assert.deepEqual(
-                evalTortoise({tag:'/',left:12,right:4}, {}),
+                evalExpr({tag:'/',left:12,right:4}, {}),
                 3
             );
         });
         
         test('a number and an expression', function() {
             assert.deepEqual(
-                evalTortoise({tag:'/',left:81,right:{tag:'/',left:18,right:-2}}, {}),
+                evalExpr({tag:'/',left:81,right:{tag:'/',left:18,right:-2}}, {}),
                 -9
             );
         });
         
         test('by 0', function() {
             assert.deepEqual(
-                evalTortoise({tag:'/',left:3,right:0}, {}),
+                evalExpr({tag:'/',left:3,right:0}, {}),
                 Infinity
             );
         });
         
         test('0 / num', function() {
-            evalTortoise({tag:'/',left:0,right:3}, {}),
+            evalExpr({tag:'/',left:0,right:3}, {}),
             0
         });
         
@@ -97,45 +97,45 @@ suite('interpreter',function(){
     suite('comparisons',function(){
         
         test('==', function() {
-            assert.isTrue(evalTortoise({tag:'==',left:0,right:0}, {}));
-            assert.isTrue(evalTortoise({tag:'==',left:1,right:1}, {}));
+            assert.isTrue(evalExpr({tag:'==',left:0,right:0}, {}));
+            assert.isTrue(evalExpr({tag:'==',left:1,right:1}, {}));
         });
         
         test('!=', function() {
-            assert.isFalse(evalTortoise({tag:'!=',left:0,right:0}, {}));
-            assert.isFalse(evalTortoise({tag:'!=',left:1,right:1}, {}));
+            assert.isFalse(evalExpr({tag:'!=',left:0,right:0}, {}));
+            assert.isFalse(evalExpr({tag:'!=',left:1,right:1}, {}));
         });
         
         test('>', function() {
-            assert.isTrue(evalTortoise({tag:'>',left:1,right:0}, {}));
-            assert.isTrue(evalTortoise({tag:'>',left:1,right:-1}, {}));
+            assert.isTrue(evalExpr({tag:'>',left:1,right:0}, {}));
+            assert.isTrue(evalExpr({tag:'>',left:1,right:-1}, {}));
             
-            assert.isFalse(evalTortoise({tag:'>',left:0,right:0}, {}));
-            assert.isFalse(evalTortoise({tag:'>',left:1,right:1}, {}));
+            assert.isFalse(evalExpr({tag:'>',left:0,right:0}, {}));
+            assert.isFalse(evalExpr({tag:'>',left:1,right:1}, {}));
         });
         
         test('<', function() {
-            assert.isTrue(evalTortoise({tag:'<',left:0,right:1}, {}));
-            assert.isTrue(evalTortoise({tag:'<',left:-1,right:1}, {}));
+            assert.isTrue(evalExpr({tag:'<',left:0,right:1}, {}));
+            assert.isTrue(evalExpr({tag:'<',left:-1,right:1}, {}));
             
-            assert.isFalse(evalTortoise({tag:'<',left:0,right:0}, {}));
-            assert.isFalse(evalTortoise({tag:'<',left:1,right:1}, {}));
+            assert.isFalse(evalExpr({tag:'<',left:0,right:0}, {}));
+            assert.isFalse(evalExpr({tag:'<',left:1,right:1}, {}));
         });
         
         test('>=', function() {
-            assert.isTrue(evalTortoise({tag:'>=',left:1,right:0}, {}));
-            assert.isTrue(evalTortoise({tag:'>=',left:1,right:-1}, {}));
+            assert.isTrue(evalExpr({tag:'>=',left:1,right:0}, {}));
+            assert.isTrue(evalExpr({tag:'>=',left:1,right:-1}, {}));
             
-            assert.isTrue(evalTortoise({tag:'>=',left:0,right:0}, {}));
-            assert.isTrue(evalTortoise({tag:'>=',left:1,right:1}, {}));
+            assert.isTrue(evalExpr({tag:'>=',left:0,right:0}, {}));
+            assert.isTrue(evalExpr({tag:'>=',left:1,right:1}, {}));
         });
         
         test('<=', function() {
-            assert.isTrue(evalTortoise({tag:'<=',left:0,right:1}, {}));
-            assert.isTrue(evalTortoise({tag:'<=',left:-1,right:1}, {}));
+            assert.isTrue(evalExpr({tag:'<=',left:0,right:1}, {}));
+            assert.isTrue(evalExpr({tag:'<=',left:-1,right:1}, {}));
             
-            assert.isTrue(evalTortoise({tag:'<=',left:0,right:0}, {}));
-            assert.isTrue(evalTortoise({tag:'<=',left:1,right:1}, {}));
+            assert.isTrue(evalExpr({tag:'<=',left:0,right:0}, {}));
+            assert.isTrue(evalExpr({tag:'<=',left:1,right:1}, {}));
         });
         
     });
@@ -146,7 +146,7 @@ suite('interpreter',function(){
         
         test('x + y', function() {
             assert.deepEqual(
-                evalTortoise({tag:'+',left:{tag:'ident',name:'x'},right:{tag:'ident',name:'y'}}, env),
+                evalExpr({tag:'+',left:{tag:'ident',name:'x'},right:{tag:'ident',name:'y'}}, env),
                 5
             );
         });
